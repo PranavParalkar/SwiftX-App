@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SwiftX</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_wallet">Wallet</string>
+    <string name="nav_activity">Activity</string>
+    <string name="nav_profile">Profile</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_title_1">Zero-Fee Remittances</string>
+    <string name="onboarding_desc_1">Send money home instantly without any transaction fees. Your family receives every penny you send.</string>
+    <string name="onboarding_title_2">Secure Digital Wallet</string>
+    <string name="onboarding_desc_2">Your money is protected by blockchain technology. Every transaction is transparent and verifiable.</string>
+    <string name="onboarding_title_3">Smart Financial Insights</string>
+    <string name="onboarding_desc_3">AI-powered recommendations help you save more, invest wisely, and build a better financial future.</string>
+    <string name="get_started">Get Started</string>
+    <string name="next">Next</string>
+    <string name="skip">Skip</string>
+
+    <!-- Auth -->
+    <string name="welcome_back">Welcome Back</string>
+    <string name="login_subtitle">Sign in to your SwiftX account</string>
+    <string name="email_hint">Email address</string>
+    <string name="password_hint">Password</string>
+    <string name="login">Sign In</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="no_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="create_account">Create Account</string>
+    <string name="register_subtitle">Join SwiftX and start sending money for free</string>
+    <string name="full_name_hint">Full Name</string>
+    <string name="phone_hint">Phone Number</string>
+    <string name="country_hint">Country</string>
+    <string name="currency_hint">Preferred Currency</string>
+    <string name="confirm_password_hint">Confirm Password</string>
+    <string name="already_have_account">Already have an account?</string>
+
+    <!-- Home -->
+    <string name="total_balance">Total Balance</string>
+    <string name="quick_actions">Quick Actions</string>
+    <string name="send_money">Send Money</string>
+    <string name="receive_money">Receive</string>
+    <string name="add_funds">Add Funds</string>
+    <string name="exchange">Exchange</string>
+    <string name="recent_transactions">Recent Transactions</string>
+    <string name="view_all">View All</string>
+    <string name="ai_insights">AI Insights</string>
+
+    <!-- Wallet -->
+    <string name="my_wallets">My Wallets</string>
+    <string name="add_wallet">Add Wallet</string>
+
+    <!-- Send Money -->
+    <string name="send_money_title">Send Money</string>
+    <string name="recipient">Recipient</string>
+    <string name="recipient_email_hint">Recipient email or phone</string>
+    <string name="amount">Amount</string>
+    <string name="amount_hint">0.00</string>
+    <string name="you_send">You Send</string>
+    <string name="they_receive">They Receive</string>
+    <string name="exchange_rate">Exchange Rate</string>
+    <string name="transfer_fee">Transfer Fee</string>
+    <string name="zero_fee">FREE</string>
+    <string name="review_transfer">Review Transfer</string>
+    <string name="confirm_send">Confirm &amp; Send</string>
+    <string name="transfer_success">Transfer Successful!</string>
+    <string name="transfer_success_desc">Your money has been sent successfully with zero fees.</string>
+
+    <!-- Transactions -->
+    <string name="transaction_history">Transaction History</string>
+    <string name="search_transactions">Search transactions…</string>
+    <string name="filter">Filter</string>
+    <string name="all">All</string>
+    <string name="sent">Sent</string>
+    <string name="received">Received</string>
+    <string name="pending">Pending</string>
+    <string name="completed">Completed</string>
+    <string name="failed">Failed</string>
+
+    <!-- Profile -->
+    <string name="my_profile">My Profile</string>
+    <string name="kyc_status">KYC Status</string>
+    <string name="verified">Verified</string>
+    <string name="not_verified">Not Verified</string>
+    <string name="verify_now">Verify Now</string>
+    <string name="settings">Settings</string>
+    <string name="security">Security</string>
+    <string name="language">Language</string>
+    <string name="notifications">Notifications</string>
+    <string name="help_support">Help &amp; Support</string>
+    <string name="about">About SwiftX</string>
+    <string name="logout">Logout</string>
+    <string name="version">Version 1.0.0</string>
+
+    <!-- Insights -->
+    <string name="financial_insights">Financial Insights</string>
+    <string name="powered_by_ai">Powered by AI</string>
+    <string name="savings_tip">Savings Tip</string>
+    <string name="investment_tip">Investment Tip</string>
+    <string name="spending_alert">Spending Alert</string>
+
+    <!-- General -->
+    <string name="loading">Loading…</string>
+    <string name="error_occurred">Something went wrong. Please try again.</string>
+    <string name="no_internet">No internet connection</string>
+    <string name="retry">Retry</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="done">Done</string>
+    <string name="save">Save</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="confirm">Confirm</string>
+    <string name="back">Back</string>
+    <string name="close">Close</string>
+</resources>

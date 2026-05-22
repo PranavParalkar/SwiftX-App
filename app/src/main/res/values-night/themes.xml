@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Night theme inherits from the main theme since we're always dark -->
+    <style name="Theme.SwiftApp" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorPrimary">@color/swift_primary</item>
+        <item name="colorPrimaryVariant">@color/swift_primary_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/swift_secondary</item>
+        <item name="colorSecondaryVariant">@color/swift_secondary_dark</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="android:colorBackground">@color/swift_bg_primary</item>
+        <item name="colorSurface">@color/swift_bg_card</item>
+        <item name="colorOnSurface">@color/swift_text_primary</item>
+        <item name="android:statusBarColor">@color/swift_bg_primary</item>
+        <item name="android:navigationBarColor">@color/swift_bg_secondary</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
+        <item name="android:textColorPrimary">@color/swift_text_primary</item>
+        <item name="android:textColorSecondary">@color/swift_text_secondary</item>
+        <item name="android:textColorHint">@color/swift_text_hint</item>
+    </style>
+</resources>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- SwiftX Brand Colors -->
+    <color name="swift_primary">#FF00C9A7</color>
+    <color name="swift_primary_dark">#FF00A88A</color>
+    <color name="swift_primary_light">#FF33D4B9</color>
+    <color name="swift_secondary">#FF845EF7</color>
+    <color name="swift_secondary_dark">#FF6B3FD4</color>
+    <color name="swift_accent">#FF00B4D8</color>
+
+    <!-- Dark Theme -->
+    <color name="swift_bg_primary">#FF0A0E27</color>
+    <color name="swift_bg_secondary">#FF141937</color>
+    <color name="swift_bg_card">#FF1A2142</color>
+    <color name="swift_bg_card_elevated">#FF202850</color>
+    <color name="swift_bg_input">#FF1E2545</color>
+
+    <!-- Text Colors -->
+    <color name="swift_text_primary">#FFFFFFFF</color>
+    <color name="swift_text_secondary">#FF8892B0</color>
+    <color name="swift_text_hint">#FF5A6380</color>
+    <color name="swift_text_disabled">#FF3D4560</color>
+
+    <!-- Status Colors -->
+    <color name="swift_success">#FF00E676</color>
+    <color name="swift_success_bg">#1A00E676</color>
+    <color name="swift_warning">#FFFFB74D</color>
+    <color name="swift_warning_bg">#1AFFB74D</color>
+    <color name="swift_error">#FFFF5252</color>
+    <color name="swift_error_bg">#1AFF5252</color>
+    <color name="swift_info">#FF448AFF</color>
+
+    <!-- Gradient Colors -->
+    <color name="swift_gradient_start">#FF00C9A7</color>
+    <color name="swift_gradient_mid">#FF845EF7</color>
+    <color name="swift_gradient_end">#FF00B4D8</color>
+
+    <!-- Overlay -->
+    <color name="swift_overlay">#80000000</color>
+    <color name="swift_divider">#1AFFFFFF</color>
+    <color name="swift_ripple">#3300C9A7</color>
+
+    <!-- Legacy compat -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>

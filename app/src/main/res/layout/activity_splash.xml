@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/swift_bg_primary">
+
+    <LinearLayout
+        android:id="@+id/splashContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:alpha="0">
+
+        <!-- Logo Badge -->
+        <FrameLayout
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/bg_icon_circle">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:src="@android:drawable/ic_menu_send"
+                android:tint="@color/swift_primary" />
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="SwiftX"
+            android:textColor="@color/swift_text_primary"
+            android:textSize="@dimen/text_hero"
+            android:fontFamily="sans-serif-bold"
+            android:letterSpacing="0.05" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Financial Freedom for Everyone"
+            android:textColor="@color/swift_text_secondary"
+            android:textSize="@dimen/text_md" />
+    </LinearLayout>
+
+    <!-- Bottom branding -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="48dp"
+        android:text="Secured by Blockchain"
+        android:textColor="@color/swift_text_hint"
+        android:textSize="@dimen/text_sm"
+        android:alpha="0"
+        android:id="@+id/splashTagline" />
+
+</FrameLayout>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingVertical="12dp">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cvIcon"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="@color/swift_bg_secondary">
+
+        <TextView
+            android:id="@+id/tvTransactionInitial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="S"
+            android:textColor="@color/swift_text_secondary"
+            android:textSize="@dimen/text_xl"
+            android:fontFamily="sans-serif-bold" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvTransactionTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sarah Jenkins"
+            android:textColor="@color/swift_text_primary"
+            android:textSize="@dimen/text_lg"
+            android:fontFamily="sans-serif-bold" />
+
+        <TextView
+            android:id="@+id/tvTransactionSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Sent • Today"
+            android:textColor="@color/swift_text_secondary"
+            android:textSize="@dimen/text_sm" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvTransactionAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-$250.00"
+            android:textColor="@color/swift_text_primary"
+            android:textSize="@dimen/text_lg"
+            android:fontFamily="sans-serif-bold" />
+
+        <TextView
+            android:id="@+id/tvTransactionStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Pending"
+            android:textColor="@color/swift_warning"
+            android:textSize="@dimen/text_xs"
+            android:visibility="gone" />
+    </LinearLayout>
+</LinearLayout>
