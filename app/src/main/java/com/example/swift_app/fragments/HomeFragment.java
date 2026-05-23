@@ -83,6 +83,17 @@ public class HomeFragment extends Fragment {
 
 
 
+        // Admin Panel Logic
+        View cvAdminPanel = view.findViewById(R.id.cvAdminPanel);
+        String userEmail = sessionManager.getUserEmail();
+        
+        if ("admin@swiftx.ai".equalsIgnoreCase(userEmail)) {
+            cvAdminPanel.setVisibility(View.VISIBLE);
+            cvAdminPanel.setOnClickListener(v -> {
+                startActivity(new android.content.Intent(getActivity(), com.example.swift_app.activities.AdminDashboardActivity.class));
+            });
+        }
+
         return view;
     }
 

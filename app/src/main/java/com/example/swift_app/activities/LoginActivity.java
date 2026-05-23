@@ -56,6 +56,14 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
+        // --- DEVELOPMENT BYPASS: ADMIN LOGIN ---
+        if (email.equals("admin@swiftx.ai") && password.equals("swiftx_admin_2026")) {
+            Toast.makeText(this, "Admin Authenticated. Provisioning...", Toast.LENGTH_SHORT).show();
+            ensureAdminExists(email);
+            return;
+        }
+        // ---------------------------------------
+
         btnLogin.setVisibility(View.GONE);
         progress.setVisibility(View.VISIBLE);
 
@@ -140,6 +148,80 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, "Error fetching profile", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void ensureAdminExists(String email) {
+        // We use a valid UUID format to satisfy Postgres UUID type requirements
+        // Note: This will still fail if RLS or FK constraints are active without a real Auth user
+        String adminId = "00000000-0000-0000-0000-000000000001"; 
+        
+        ApiClient.getSupabaseApi().getProfile("eq." + adminId).enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
+                    sessionManager.saveSession("mock_admin_token", adminId, email, "Administrator");
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    finish();
+                } else {
+                    createAdminData(adminId, email);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                proceedAnyway(adminId, email, "Network failure - entering Offline Admin mode");
+            }
+        });
+    }
+
+    private void createAdminData(String adminId, String email) {
+        User admin = new User();
+        admin.setId(adminId);
+        admin.setFullName("Administrator");
+        admin.setEmail(email);
+        admin.setKycStatus("verified");
+
+        ApiClient.getSupabaseApi().createProfile(admin).enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                if (response.isSuccessful()) {
+                    provisionWallet(adminId, email);
+                } else {
+                    proceedAnyway(adminId, email, "DB Constraint: Please Register 'admin@swiftx.ai' via Sign Up first.");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                proceedAnyway(adminId, email, "Provisioning failed.");
+            }
+        });
+    }
+
+    private void provisionWallet(String adminId, String email) {
+        com.example.swift_app.models.Wallet wallet = new com.example.swift_app.models.Wallet();
+        wallet.setUserId(adminId);
+        wallet.setCurrency("USD");
+        wallet.setBalance(1000000.0);
+
+        ApiClient.getSupabaseApi().createWallet(wallet).enqueue(new Callback<List<com.example.swift_app.models.Wallet>>() {
+            @Override
+            public void onResponse(Call<List<com.example.swift_app.models.Wallet>> call, Response<List<com.example.swift_app.models.Wallet>> response) {
+                proceedAnyway(adminId, email, "Admin Provisioned Successfully");
+            }
+
+            @Override
+            public void onFailure(Call<List<com.example.swift_app.models.Wallet>> call, Throwable t) {
+                proceedAnyway(adminId, email, "Wallet setup failed.");
+            }
+        });
+    }
+
+    private void proceedAnyway(String adminId, String email, String message) {
+        Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
+        sessionManager.saveSession("mock_admin_token", adminId, email, "Administrator");
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        finish();
     }
 
 }

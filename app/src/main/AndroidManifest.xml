@@ -43,6 +43,9 @@
         <activity android:name=".activities.TransactionDetailActivity" />
         <activity android:name=".activities.KycActivity" />
         <activity android:name=".activities.ContactsActivity" />
+        <activity android:name=".activities.AddFundsActivity" />
+        <activity android:name=".activities.ExchangeActivity" />
+        <activity android:name=".activities.AdminDashboardActivity" />
 
 
 

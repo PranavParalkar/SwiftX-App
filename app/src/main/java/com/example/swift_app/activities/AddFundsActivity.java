@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -52,8 +53,10 @@ public class AddFundsActivity extends AppCompatActivity {
         chipGroup.setOnCheckedStateChangeListener((group, checkedIds) -> {
             if (!checkedIds.isEmpty()) {
                 Chip chip = findViewById(checkedIds.get(0));
-                String text = chip.getText().toString().replace("+$", "");
-                etAmount.setText(text);
+                if (chip != null && chip.getText() != null) {
+                    String text = chip.getText().toString().replace("+$", "");
+                    etAmount.setText(text);
+                }
             }
         });
 
@@ -85,7 +88,7 @@ public class AddFundsActivity extends AppCompatActivity {
                 double amount = Double.parseDouble(amountStr);
                 validateAndProcess(amount);
             } catch (NumberFormatException e) {
-                Toast.makeText(this, "Invalid amount", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.msg_invalid_amount, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -108,9 +111,9 @@ public class AddFundsActivity extends AppCompatActivity {
 
     private void executeDeposit(double amount) {
         btnAdd.setEnabled(false);
-        btnAdd.setText("Processing Ledger...");
+        btnAdd.setText(R.string.btn_processing_ledger);
 
-        walletRepository.depositFunds(sessionManager.getUserId(), amount, new WalletRepository.WalletCallback<Transaction>() {
+        walletRepository.depositFunds(sessionManager.getUserId(), amount, new WalletRepository.WalletCallback<>() {
             @Override
             public void onSuccess(Transaction result) {
                 showSuccessDialog(result);
@@ -119,30 +122,32 @@ public class AddFundsActivity extends AppCompatActivity {
             @Override
             public void onError(String message) {
                 btnAdd.setEnabled(true);
-                btnAdd.setText("Confirm Deposit");
-                Toast.makeText(AddFundsActivity.this, "Error: " + message, Toast.LENGTH_LONG).show();
+                btnAdd.setText(R.string.btn_confirm_deposit);
+                String error = getString(R.string.error_message_prefix, message);
+                Toast.makeText(AddFundsActivity.this, error, Toast.LENGTH_LONG).show();
             }
         });
     }
 
     private void showAmlBlockDialog(AmlRulesEngine.AmlResult result) {
+        String message = getString(R.string.msg_aml_block, result.getTriggeredRules().get(0));
         new AlertDialog.Builder(this)
-                .setTitle("Limit Reached")
-                .setMessage("This deposit exceeds your current compliance limits. Please complete your KYC verification to increase limits.\n\nTriggered: " + result.getTriggeredRules().get(0))
-                .setPositiveButton("Verify Identity", (d, w) -> {
+                .setTitle(R.string.title_limit_reached)
+                .setMessage(message)
+                .setPositiveButton(R.string.btn_verify_identity, (d, w) -> {
                     // Navigate to KYC
                     finish();
                 })
-                .setNegativeButton("Cancel", null)
+                .setNegativeButton(R.string.btn_cancel, null)
                 .show();
     }
 
     private void showAmlWarningAndProceed(double amount, AmlRulesEngine.AmlResult result) {
         new AlertDialog.Builder(this)
-                .setTitle("Compliance Review")
-                .setMessage("Large deposits are subject to standard compliance checks. This may take up to 24 hours to clear in some regions.\n\nDo you wish to proceed?")
-                .setPositiveButton("Yes, Proceed", (d, w) -> executeDeposit(amount))
-                .setNegativeButton("Cancel", null)
+                .setTitle(R.string.title_compliance_review)
+                .setMessage(R.string.msg_aml_warning)
+                .setPositiveButton(R.string.btn_yes_proceed, (d, w) -> executeDeposit(amount))
+                .setNegativeButton(R.string.btn_cancel, null)
                 .show();
     }
 
@@ -157,7 +162,7 @@ public class AddFundsActivity extends AppCompatActivity {
         new AlertDialog.Builder(this)
                 .setView(view)
                 .setCancelable(false)
-                .setPositiveButton("Back to Wallet", (d, w) -> finish())
+                .setPositiveButton(R.string.btn_back_to_wallet, (d, w) -> finish())
                 .show();
     }
 }
