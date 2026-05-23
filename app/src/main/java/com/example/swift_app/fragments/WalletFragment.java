@@ -84,28 +84,61 @@ public class WalletFragment extends Fragment {
             @Override
             public void onResponse(@NonNull Call<List<Wallet>> call, @NonNull Response<List<Wallet>> response) {
                 if (!isAdded()) return;
-                if (response.isSuccessful() && response.body() != null) {
-                    List<Wallet> wallets = response.body();
-                    walletAdapter.updateList(wallets);
-
-                    // Update total balance (sum of all wallets)
-                    double totalBalance = 0;
-                    String primaryCurrency = "USD";
-                    for (Wallet w : wallets) {
-                        totalBalance += w.getBalance();
-                        if (wallets.indexOf(w) == 0) {
-                            primaryCurrency = w.getCurrency();
-                        }
+                if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
+                    Wallet unifiedWallet = response.body().get(0);
+                    
+                    // Convert unified wallet to individual currency wallets for display
+                    List<Wallet> displayWallets = new ArrayList<>();
+                    
+                    // USD Wallet
+                    if (unifiedWallet.getUsdBalance() > 0 || displayWallets.isEmpty()) {
+                        Wallet usdWallet = new Wallet();
+                        usdWallet.setId(unifiedWallet.getId());
+                        usdWallet.setUserId(unifiedWallet.getUserId());
+                        usdWallet.setCurrency("USD");
+                        usdWallet.setBalance(unifiedWallet.getUsdBalance());
+                        displayWallets.add(usdWallet);
                     }
-                    tvWalletBalance.setText(CurrencyFormatter.format(totalBalance, primaryCurrency));
-                    tvCurrencyCount.setText(String.format(Locale.getDefault(), "%d account%s", wallets.size(), wallets.size() != 1 ? "s" : ""));
+                    
+                    // INR Wallet
+                    if (unifiedWallet.getInrBalance() > 0) {
+                        Wallet inrWallet = new Wallet();
+                        inrWallet.setId(unifiedWallet.getId());
+                        inrWallet.setUserId(unifiedWallet.getUserId());
+                        inrWallet.setCurrency("INR");
+                        inrWallet.setBalance(unifiedWallet.getInrBalance());
+                        displayWallets.add(inrWallet);
+                    }
+                    
+                    // AED Wallet
+                    if (unifiedWallet.getAedBalance() > 0) {
+                        Wallet aedWallet = new Wallet();
+                        aedWallet.setId(unifiedWallet.getId());
+                        aedWallet.setUserId(unifiedWallet.getUserId());
+                        aedWallet.setCurrency("AED");
+                        aedWallet.setBalance(unifiedWallet.getAedBalance());
+                        displayWallets.add(aedWallet);
+                    }
+                    
+                    walletAdapter.updateList(displayWallets);
+
+                    // Calculate total balance in USD equivalent
+                    double totalUsd = unifiedWallet.getUsdBalance() + 
+                                     (unifiedWallet.getInrBalance() / 85.0) + 
+                                     (unifiedWallet.getAedBalance() / 3.67);
+                    
+                    tvWalletBalance.setText(CurrencyFormatter.format(totalUsd, "USD"));
+                    
+                    int activeWallets = displayWallets.size();
+                    tvCurrencyCount.setText(String.format(Locale.getDefault(), 
+                        "%d active currency account%s", activeWallets, activeWallets != 1 ? "s" : ""));
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<List<Wallet>> call, @NonNull Throwable t) {
                 if (isAdded()) {
-                    Toast.makeText(requireContext(), "Failed to load wallets", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Failed to load wallets: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });

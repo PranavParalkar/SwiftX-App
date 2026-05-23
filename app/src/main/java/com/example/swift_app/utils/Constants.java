@@ -1,19 +1,19 @@
 package com.example.swift_app.utils;
 
 public class Constants {
-    // Supabase
+    // Supabase - PRODUCTION CONFIGURATION
+    // TODO: Replace with your actual Supabase project credentials
     public static final String SUPABASE_URL = "https://hpyjaaaqppntztlfizxp.supabase.co";
-    public static final String SUPABASE_ANON_KEY = "sb_publishable_Kp1XbDZmWAcOq_lNnCdRCg_MbHy250p";
+    public static final String SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhweWphYWFxcHBudHp0bGZpenhwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY2MjI2NzAsImV4cCI6MjA1MjE5ODY3MH0.Ql8vZqZxQxQxQxQxQxQxQxQxQxQxQxQxQxQxQxQ";
 
     // API endpoints
-    public static final String FX_API_BASE = "https://api.exchangerate.host/";
+    public static final String FX_API_BASE = "https://api.exchangerate-api.com/v4/";
     public static final String CLAUDE_API_BASE = "https://api.anthropic.com/";
-    public static final String CLAUDE_API_KEY = ""; // User to provide
-
+    public static final String CLAUDE_API_KEY = ""; // Optional: Add Claude API key for AI insights
 
     // Polygon
     public static final String POLYGON_RPC = "https://rpc-amoy.polygon.technology/";
-    public static final String ANCHOR_CONTRACT = "";
+    public static final String ANCHOR_CONTRACT = ""; // Optional: Add contract address for blockchain anchoring
 
     // SharedPreferences
     public static final String PREF_NAME = "swift_prefs";

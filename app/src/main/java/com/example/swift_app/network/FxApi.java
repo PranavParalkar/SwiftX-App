@@ -4,16 +4,11 @@ import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.Query;
+import retrofit2.http.Path;
 
 public interface FxApi {
-    @GET("latest")
-    Call<Map<String, Object>> getLatestRates(@Query("base") String base);
-
-    @GET("convert")
-    Call<Map<String, Object>> convert(
-        @Query("from") String from,
-        @Query("to") String to,
-        @Query("amount") double amount
-    );
+    // Using exchangerate-api.com which provides free tier without API key
+    // Format: https://api.exchangerate-api.com/v4/latest/USD
+    @GET("latest/{base}")
+    Call<Map<String, Object>> getLatestRates(@Path("base") String base);
 }

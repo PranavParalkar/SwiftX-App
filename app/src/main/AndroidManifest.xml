@@ -2,8 +2,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Network permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    
+    <!-- Storage permissions for KYC document upload -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" 
+        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    
+    <!-- Camera permission for KYC document capture -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    
+    <!-- Optional: Vibrate for haptic feedback -->
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -13,7 +25,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.SwiftApp">
+        android:theme="@style/Theme.SwiftApp"
+        android:usesCleartextTraffic="false">
 
         <activity
             android:name=".activities.SplashActivity"
@@ -47,13 +60,6 @@
         <activity android:name="com.example.swift_app.activities.ExchangeActivity" />
         <activity android:name="com.example.swift_app.activities.AdminDashboardActivity" />
 
-
-
-
-
-
-
     </application>
-
 
 </manifest>
