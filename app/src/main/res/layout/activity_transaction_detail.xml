@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/swift_bg_primary"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@android:drawable/ic_menu_revert"
+        app:tint="@color/white" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/statusDot"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:background="@drawable/bg_icon_circle" />
+
+        <TextView
+            android:id="@+id/tvDetailAmount"
+            style="@style/SwiftText.Hero"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="$0.00" />
+
+        <TextView
+            android:id="@+id/tvDetailStatus"
+            style="@style/SwiftText.Body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Completed"
+            android:textColor="@color/swift_primary" />
+    </LinearLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/SwiftCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                style="@style/SwiftText.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Transfer Details" />
+
+            <include layout="@layout/item_detail_row" android:id="@+id/rowSender" />
+            <include layout="@layout/item_detail_row" android:id="@+id/rowRecipient" />
+            <include layout="@layout/item_detail_row" android:id="@+id/rowDate" />
+            <include layout="@layout/item_detail_row" android:id="@+id/rowType" />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/SwiftCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+                <TextView
+                    style="@style/SwiftText.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cryptographic Proof" />
+
+                <TextView
+                    style="@style/SwiftText.Body"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Previous Hash:"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tvPrevHash"
+                    style="@style/SwiftText.Body"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="middle"
+                    android:singleLine="true"
+                    android:text="00000000..."
+                    android:textColor="@color/swift_text_secondary"
+                    android:textSize="11sp" />
+
+                <TextView
+                    style="@style/SwiftText.Body"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Current Hash:"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tvCurrentHash"
+                    style="@style/SwiftText.Body"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="middle"
+                    android:singleLine="true"
+                    android:text="abcdef123..."
+                    android:textColor="@color/swift_primary"
+                    android:textSize="11sp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cvPolygonAnchor"
+
+        style="@style/SwiftCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@android:drawable/ic_lock_lock"
+                    app:tint="@color/swift_primary" />
+
+                <TextView
+                    style="@style/SwiftText.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Blockchain Verified"
+                    android:textColor="@color/swift_primary" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvPolygonTx"
+                style="@style/SwiftText.Body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:ellipsize="middle"
+                android:singleLine="true"
+                android:text="0x1234567890abcdef..."
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tvPolygonBlock"
+                style="@style/SwiftText.Body"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Block #1234567"
+                android:textColor="@color/swift_text_secondary"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>
+

@@ -19,6 +19,8 @@ fragment = "1.6.2"
 core-splashscreen = "1.0.1"
 swiperefreshlayout = "1.1.0"
 gridlayout = "1.0.0"
+zxing = "3.4.1"
+zxing-android = "4.3.0"
 
 
 [libraries]
@@ -43,6 +45,9 @@ fragment = { group = "androidx.fragment", name = "fragment", version.ref = "frag
 core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "core-splashscreen" }
 swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
 gridlayout = { group = "androidx.gridlayout", name = "gridlayout", version.ref = "gridlayout" }
+zxing = { group = "com.google.zxing", name = "core", version.ref = "zxing" }
+zxing-android = { group = "com.journeyapps", name = "zxing-android-embedded", version.ref = "zxing-android" }
+
 
 
 [plugins]

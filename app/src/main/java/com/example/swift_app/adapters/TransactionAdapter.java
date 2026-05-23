@@ -49,7 +49,14 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         } else {
             holder.tvStatus.setVisibility(View.GONE);
         }
+
+        holder.itemView.setOnClickListener(v -> {
+            android.content.Intent intent = new android.content.Intent(v.getContext(), com.example.swift_app.activities.TransactionDetailActivity.class);
+            intent.putExtra("transaction_json", new com.google.gson.Gson().toJson(tx));
+            v.getContext().startActivity(intent);
+        });
     }
+
 
     @Override
     public int getItemCount() {

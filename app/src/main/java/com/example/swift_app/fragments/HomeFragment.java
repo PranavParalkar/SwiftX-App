@@ -43,8 +43,9 @@ public class HomeFragment extends Fragment {
         tvUserName = view.findViewById(R.id.tvUserName);
         tvTotalBalance = view.findViewById(R.id.tvTotalBalance);
         tvAvatarInitial = view.findViewById(R.id.tvAvatarInitial);
-        tvAiInsight = view.findViewById(R.id.tvAiInsight);
+        tvAiInsight = view.findViewById(R.id.tvAiInsightDescription);
         rvTransactions = view.findViewById(R.id.rvRecentTransactions);
+
 
         aiService = new com.example.swift_app.services.AiService();
 
@@ -60,6 +61,27 @@ public class HomeFragment extends Fragment {
         view.findViewById(R.id.btnSendMoney).setOnClickListener(v -> {
             startActivity(new android.content.Intent(getActivity(), com.example.swift_app.activities.SendMoneyActivity.class));
         });
+
+        view.findViewById(R.id.btnReceive).setOnClickListener(v -> {
+            startActivity(new android.content.Intent(getActivity(), com.example.swift_app.activities.ReceiveMoneyActivity.class));
+        });
+
+        view.findViewById(R.id.btnAdd).setOnClickListener(v -> {
+            startActivity(new android.content.Intent(getActivity(), com.example.swift_app.activities.AddFundsActivity.class));
+        });
+
+        view.findViewById(R.id.btnExchange).setOnClickListener(v -> {
+            startActivity(new android.content.Intent(getActivity(), com.example.swift_app.activities.ExchangeActivity.class));
+        });
+
+        view.findViewById(R.id.cvInsight).setOnClickListener(v -> {
+
+            if (getActivity() instanceof com.example.swift_app.activities.MainActivity) {
+                ((com.example.swift_app.activities.MainActivity) getActivity()).loadInsightsFragment();
+            }
+        });
+
+
 
         return view;
     }

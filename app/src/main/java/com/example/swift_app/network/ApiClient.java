@@ -93,12 +93,28 @@ public class ApiClient {
         return authRetrofit;
     }
 
+    private static SupabaseApi supabaseApi;
+    private static SupabaseApi authApi;
+    private static FxApi fxApi;
+
     public static SupabaseApi getSupabaseApi() {
-        return getSupabaseClient().create(SupabaseApi.class);
+        if (supabaseApi == null) {
+            supabaseApi = getSupabaseClient().create(SupabaseApi.class);
+        }
+        return supabaseApi;
     }
 
     public static SupabaseApi getAuthApi() {
-        return getAuthClient().create(SupabaseApi.class);
+        if (authApi == null) {
+            authApi = getAuthClient().create(SupabaseApi.class);
+        }
+        return authApi;
+    }
+
+    public static FxApi getFxApi() {
+        if (fxApi == null) {
+            fxApi = getFxClient().create(FxApi.class);
+        }
+        return fxApi;
     }
 }
-

@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/swift_bg_primary"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
+
 
     <FrameLayout
         android:id="@+id/fragmentContainer"
@@ -15,11 +17,13 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/bottom_nav_height"
+        android:layout_height="wrap_content"
         android:background="@color/swift_bg_secondary"
         app:itemIconTint="@color/bottom_nav_colors"
         app:itemTextColor="@color/bottom_nav_colors"
         app:labelVisibilityMode="labeled"
         app:menu="@menu/bottom_nav_menu"
-        app:itemRippleColor="@color/swift_ripple" />
+        app:itemRippleColor="@color/swift_ripple"
+        app:elevation="16dp" />
+
 </LinearLayout>

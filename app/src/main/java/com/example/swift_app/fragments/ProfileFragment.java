@@ -24,12 +24,33 @@ public class ProfileFragment extends Fragment {
 
         TextView tvName = view.findViewById(R.id.tvProfileName);
         TextView tvEmail = view.findViewById(R.id.tvProfileEmail);
+        TextView tvInitial = view.findViewById(R.id.tvProfileInitial);
         
-        tvName.setText(sessionManager.getUserName());
+        String name = sessionManager.getUserName();
+        tvName.setText(name);
         tvEmail.setText(sessionManager.getUserEmail());
+
+        if (name != null && !name.isEmpty()) {
+            tvInitial.setText(String.valueOf(name.charAt(0)).toUpperCase());
+        } else {
+            tvInitial.setText("U");
+        }
+
+        view.findViewById(R.id.cvVerifyKyc).setOnClickListener(v -> {
+            startActivity(new android.content.Intent(requireContext(), com.example.swift_app.activities.KycActivity.class));
+        });
+
+        view.findViewById(R.id.btnSecuritySettings).setOnClickListener(v -> {
+            // Placeholder for now
+        });
+
+        view.findViewById(R.id.btnHelpSupport).setOnClickListener(v -> {
+            // Placeholder for now
+        });
 
         view.findViewById(R.id.btnLogout).setOnClickListener(v -> {
             sessionManager.clearSession();
+
             Intent intent = new Intent(requireContext(), LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

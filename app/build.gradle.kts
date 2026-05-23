@@ -56,6 +56,9 @@ dependencies {
     // UI / Animations
     implementation(libs.lottie)
     implementation(libs.mpandroidchart)
+    implementation(libs.zxing)
+    implementation(libs.zxing.android)
+
 
     // Testing
     testImplementation(libs.junit)

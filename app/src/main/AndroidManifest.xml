@@ -39,6 +39,14 @@
         <activity android:name=".activities.RegisterActivity" />
         <activity android:name=".activities.MainActivity" />
         <activity android:name=".activities.SendMoneyActivity" />
+        <activity android:name=".activities.ReceiveMoneyActivity" />
+        <activity android:name=".activities.TransactionDetailActivity" />
+        <activity android:name=".activities.KycActivity" />
+        <activity android:name=".activities.ContactsActivity" />
+
+
+
+
 
 
 

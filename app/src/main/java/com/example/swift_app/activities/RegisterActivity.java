@@ -161,9 +161,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if (response.isSuccessful()) {
                     sessionManager.saveSession(token, userId, email, name);
-                    Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
+                    createDefaultWallet(userId, token);
                 } else {
                     Toast.makeText(RegisterActivity.this, "Profile creation failed (check RLS)", Toast.LENGTH_SHORT).show();
                 }
@@ -177,5 +175,30 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void createDefaultWallet(String userId, String token) {
+        com.example.swift_app.models.Wallet defaultWallet = new com.example.swift_app.models.Wallet();
+        defaultWallet.setUserId(userId);
+        defaultWallet.setCurrency(actvCurrency.getText().toString().isEmpty() ? "USD" : actvCurrency.getText().toString());
+        defaultWallet.setBalance(100.0); // Start with $100 for demo purposes
+
+        ApiClient.getSupabaseApi().createWallet(defaultWallet).enqueue(new Callback<java.util.List<com.example.swift_app.models.Wallet>>() {
+            @Override
+            public void onResponse(Call<java.util.List<com.example.swift_app.models.Wallet>> call, Response<java.util.List<com.example.swift_app.models.Wallet>> response) {
+                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(Call<java.util.List<com.example.swift_app.models.Wallet>> call, Throwable t) {
+                // Still proceed to main, the user can create a wallet later or retry
+                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
+    }
+
 
 }

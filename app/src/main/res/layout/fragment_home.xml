@@ -9,7 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/spacing_lg">
+        android:padding="@dimen/spacing_lg"
+        android:paddingTop="48dp">
+
 
         <!-- Header -->
         <RelativeLayout
@@ -172,17 +174,26 @@
 
             <!-- Send -->
             <LinearLayout
-                android:id="@+id/btnSend"
+                android:id="@+id/btnSendMoney"
+
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_columnWeight="1"
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <View
+                <FrameLayout
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:background="@drawable/bg_card" />
+                    android:background="@drawable/bg_card">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_send"
+                        app:tint="@color/swift_primary" />
+                </FrameLayout>
+
                 
                 <TextView
                     android:layout_width="wrap_content"
@@ -203,10 +214,18 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <View
+                <FrameLayout
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:background="@drawable/bg_card" />
+                    android:background="@drawable/bg_card">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_receive"
+                        app:tint="@color/swift_primary" />
+                </FrameLayout>
+
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -227,10 +246,18 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <View
+                <FrameLayout
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:background="@drawable/bg_card" />
+                    android:background="@drawable/bg_card">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_add"
+                        app:tint="@color/swift_primary" />
+                </FrameLayout>
+
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -251,10 +278,18 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <View
+                <FrameLayout
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:background="@drawable/bg_card" />
+                    android:background="@drawable/bg_card">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_exchange"
+                        app:tint="@color/swift_primary" />
+                </FrameLayout>
+
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -309,6 +344,7 @@
                     </LinearLayout>
 
                     <TextView
+                        android:id="@+id/tvAiInsightLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -323,6 +359,7 @@
                 </RelativeLayout>
 
                 <TextView
+                    android:id="@+id/tvAiInsightDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Based on your spending patterns, you could save $120/month by optimizing your transfer schedule."

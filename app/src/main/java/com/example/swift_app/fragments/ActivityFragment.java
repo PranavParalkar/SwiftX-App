@@ -39,11 +39,21 @@ public class ActivityFragment extends Fragment {
 
     private void fetchHistory() {
         String userId = sessionManager.getUserId();
-        ApiClient.getSupabaseApi().getTransactions("eq." + userId).enqueue(new Callback<List<Transaction>>() {
+        String orFilter = "sender_id.eq." + userId + ",recipient_id.eq." + userId;
+        ApiClient.getSupabaseApi().getTransactions(orFilter, "created_at.desc", 100).enqueue(new Callback<List<Transaction>>() {
             @Override
             public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {
+                if (!isAdded()) return;
                 if (response.isSuccessful() && response.body() != null) {
-                    rvFullHistory.setAdapter(new TransactionAdapter(response.body()));
+                    List<Transaction> txns = response.body();
+                    if (txns.isEmpty()) {
+                        getView().findViewById(R.id.llEmptyState).setVisibility(View.VISIBLE);
+                        getView().findViewById(R.id.rvFullHistory).setVisibility(View.GONE);
+                    } else {
+                        getView().findViewById(R.id.llEmptyState).setVisibility(View.GONE);
+                        getView().findViewById(R.id.rvFullHistory).setVisibility(View.VISIBLE);
+                        rvFullHistory.setAdapter(new TransactionAdapter(txns, userId));
+                    }
                 }
             }
 
@@ -51,4 +61,5 @@ public class ActivityFragment extends Fragment {
             public void onFailure(Call<List<Transaction>> call, Throwable t) {}
         });
     }
+
 }

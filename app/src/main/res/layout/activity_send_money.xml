@@ -29,11 +29,15 @@
         android:text="Fast, secure, and fee-free transfers." />
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilRecipient"
         style="@style/SwiftInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:hint="Recipient Email">
+        android:hint="Recipient Email"
+        app:endIconDrawable="@android:drawable/ic_menu_myplaces"
+        app:endIconMode="custom"
+        app:endIconTint="@color/swift_primary">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etRecipientEmail"
@@ -42,6 +46,7 @@
             android:inputType="textEmailAddress"
             android:textColor="@color/white" />
     </com.google.android.material.textfield.TextInputLayout>
+
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/SwiftInput"
@@ -59,7 +64,18 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
+        android:id="@+id/tvConvertedAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="≈ 0.00 EUR"
+        android:textColor="@color/swift_primary"
+        android:textSize="14sp"
+        android:visibility="gone" />
+
+    <TextView
         android:id="@+id/tvAmlWarning"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"

@@ -6,7 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.swift_app.R;
+import com.example.swift_app.fragments.ActivityFragment;
 import com.example.swift_app.fragments.HomeFragment;
+import com.example.swift_app.fragments.ProfileFragment;
+import com.example.swift_app.fragments.WalletFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -17,28 +20,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         BottomNavigationView navView = findViewById(R.id.bottomNav);
-        
-        // Default fragment
-        loadFragment(new HomeFragment());
 
         navView.setOnItemSelectedListener(item -> {
-            Fragment fragment = null;
+            Fragment selected = null;
             int id = item.getItemId();
-            
+
             if (id == R.id.nav_home) {
-                fragment = new HomeFragment();
+                selected = new HomeFragment();
             } else if (id == R.id.nav_wallet) {
-                // fragment = new WalletFragment();
+                selected = new WalletFragment();
             } else if (id == R.id.nav_activity) {
-            if (id == R.id.nav_home) selected = new HomeFragment();
-            else if (id == R.id.nav_wallet) selected = new WalletFragment();
-            else if (id == R.id.nav_activity) selected = new ActivityFragment();
-            else if (id == R.id.nav_profile) selected = new ProfileFragment();
+                selected = new ActivityFragment();
+            } else if (id == R.id.nav_profile) {
+                selected = new ProfileFragment();
+            }
 
             if (selected != null) {
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainer, selected)
-                        .commit();
+                loadFragment(selected);
                 return true;
             }
             return false;
@@ -46,9 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Load default Home fragment
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContainer, new HomeFragment())
-                    .commit();
+            loadFragment(new HomeFragment());
         }
     }
 
@@ -58,4 +54,9 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.fragmentContainer, fragment)
                 .commit();
     }
+
+    public void loadInsightsFragment() {
+        loadFragment(new com.example.swift_app.fragments.InsightsFragment());
+    }
 }
+

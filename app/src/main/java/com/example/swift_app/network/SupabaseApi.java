@@ -3,6 +3,8 @@ package com.example.swift_app.network;
 import com.example.swift_app.models.Transaction;
 import com.example.swift_app.models.User;
 import com.example.swift_app.models.Wallet;
+import com.example.swift_app.models.PolygonAnchor;
+
 
 import java.util.List;
 import java.util.Map;
@@ -18,7 +20,11 @@ public interface SupabaseApi {
 
     // Profiles
     @GET("profiles")
+    Call<List<User>> getProfiles();
+
+    @GET("profiles")
     Call<List<User>> getProfile(@Query("id") String idFilter);
+
 
     @POST("profiles")
     Call<List<User>> createProfile(@Body User user);
@@ -49,6 +55,10 @@ public interface SupabaseApi {
 
     @PATCH("transactions")
     Call<List<Transaction>> updateTransaction(@Query("id") String idFilter, @Body Map<String, Object> updates);
+
+    // Anchors
+    @GET("polygon_anchors")
+    Call<List<PolygonAnchor>> getAnchors(@Query("chain_root_hash") String filter);
 
     // Auth (Supabase GoTrue)
     @POST("signup")
