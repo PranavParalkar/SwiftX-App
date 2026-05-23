@@ -25,6 +25,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:background="@drawable/bg_circle_surface"
+                    android:contentDescription="@string/cd_back"
                     android:src="@drawable/ic_back"
                     app:tint="@color/white" />
 
@@ -33,7 +34,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:text="Deposit"
+                    android:text="@string/title_deposit"
                     android:textSize="20sp" />
             </RelativeLayout>
 
@@ -42,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:text="Enter Amount"
+                android:text="@string/label_enter_amount"
                 android:textColor="@color/swift_text_secondary" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -58,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:gravity="center"
-                    android:hint="$0.00"
+                    android:hint="@string/hint_amount_zero"
                     android:inputType="numberDecimal"
                     android:padding="20dp"
                     android:textColor="@color/white"
@@ -78,28 +79,28 @@
                     style="@style/SwiftChip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="+$10" />
+                    android:text="@string/chip_add_10" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip50"
                     style="@style/SwiftChip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="+$50" />
+                    android:text="@string/chip_add_50" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip100"
                     style="@style/SwiftChip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="+$100" />
+                    android:text="@string/chip_add_100" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip500"
                     style="@style/SwiftChip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="+$500" />
+                    android:text="@string/chip_add_500" />
             </com.google.android.material.chip.ChipGroup>
 
             <TextView
@@ -107,7 +108,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:text="Payment Method"
+                android:text="@string/label_payment_method"
                 android:textColor="@color/swift_text_secondary" />
 
             <androidx.cardview.widget.CardView
@@ -127,6 +128,7 @@
                     <ImageView
                         android:layout_width="32dp"
                         android:layout_height="32dp"
+                        android:contentDescription="@string/cd_payment_method"
                         android:src="@android:drawable/ic_menu_agenda"
                         app:tint="@color/swift_primary" />
 
@@ -141,20 +143,21 @@
                             style="@style/SwiftText.Body"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Debit Card (Mock)"
+                            android:text="@string/mock_debit_card"
                             android:textStyle="bold" />
 
                         <TextView
                             style="@style/SwiftText.Caption"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="**** **** **** 4242"
+                            android:text="@string/mock_card_number"
                             android:textColor="@color/swift_text_secondary" />
                     </LinearLayout>
 
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
+                        android:contentDescription="@string/cd_edit_payment"
                         android:src="@android:drawable/ic_menu_edit"
                         app:tint="@color/swift_text_secondary" />
                 </LinearLayout>
@@ -171,6 +174,7 @@
                 <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"
+                    android:contentDescription="@string/cd_info"
                     android:src="@android:drawable/ic_dialog_info"
                     app:tint="@color/swift_info" />
 
@@ -179,7 +183,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="Funds are instantly available in your wallet."
+                    android:text="@string/info_instant_funds"
                     android:textColor="@color/swift_info" />
             </LinearLayout>
 
@@ -194,7 +198,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
                 android:layout_marginTop="24dp"
-                android:text="Confirm Deposit"
+                android:text="@string/btn_confirm_deposit"
                 app:cornerRadius="16dp" />
 
             <TextView
@@ -204,8 +208,9 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
-                android:text="Secured by SwiftX Ledger Service"
+                android:text="@string/secured_by_ledger"
                 android:textColor="@color/swift_text_secondary" />
+
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

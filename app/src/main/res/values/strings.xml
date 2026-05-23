@@ -115,4 +115,36 @@
     <string name="confirm">Confirm</string>
     <string name="back">Back</string>
     <string name="close">Close</string>
+    <!-- Add Funds Screen -->
+    <string name="title_deposit">Deposit</string>
+    <string name="label_enter_amount">Enter Amount</string>
+    <string name="hint_amount_zero">$0.00</string>
+    <string name="chip_add_10">+$10</string>
+    <string name="chip_add_50">+$50</string>
+    <string name="chip_add_100">+$100</string>
+    <string name="chip_add_500">+$500</string>
+    <string name="label_payment_method">Payment Method</string>
+    <string name="mock_debit_card">Debit Card (Mock)</string>
+    <string name="mock_card_number">**** **** **** 4242</string>
+    <string name="info_instant_funds">Funds are instantly available in your wallet.</string>
+    <string name="btn_confirm_deposit">Confirm Deposit</string>
+    <string name="btn_processing_ledger">Processing Ledger...</string>
+    <string name="secured_by_ledger">Secured by SwiftX Ledger Service</string>
+    <string name="cd_back">Back</string>
+    <string name="cd_payment_method">Payment method icon</string>
+    <string name="cd_edit_payment">Edit payment method</string>
+    <string name="cd_info">Info icon</string>
+
+    <!-- Dialogs & Logic -->
+    <string name="title_limit_reached">Limit Reached</string>
+    <string name="msg_aml_block">This deposit exceeds your current compliance limits. Please complete your KYC verification to increase limits.\n\nTriggered: %1$s</string>
+    <string name="title_compliance_review">Compliance Review</string>
+    <string name="msg_aml_warning">Large deposits are subject to standard compliance checks. This may take up to 24 hours to clear in some regions.\n\nDo you wish to proceed?</string>
+    <string name="btn_verify_identity">Verify Identity</string>
+    <string name="btn_yes_proceed">Yes, Proceed</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_back_to_wallet">Back to Wallet</string>
+    <string name="msg_invalid_amount">Invalid amount</string>
+    <string name="error_message_prefix">Error: %1$s</string>
+
 </resources>

@@ -96,6 +96,27 @@ public class AmlRulesEngine {
     }
 
     /**
+     * Run all AML checks on a proposed deposit.
+     */
+    public static AmlResult checkDeposit(double amount, String currency, String userId) {
+        AmlResult result = new AmlResult();
+
+        // Rule 1: Large cash-like deposit
+        if (amount >= 5000) {
+            result.addRule("HIGH_VALUE_DEPOSIT: Deposit exceeds compliance review threshold of $5,000");
+            result.setSeverity("medium");
+        }
+
+        // Rule 2: Hard limit for unverified
+        if (amount >= 10000) {
+            result.addRule("LIMIT_EXCEEDED: Maximum single deposit limit reached");
+            result.setSeverity("high");
+        }
+
+        return result;
+    }
+
+    /**
      * Check if a transfer can proceed (not blocked by high-severity flags).
      */
     public static boolean canProceed(AmlResult result) {
