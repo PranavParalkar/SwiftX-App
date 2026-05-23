@@ -4,6 +4,7 @@
     <color name="swift_primary">#FF00C9A7</color>
     <color name="swift_primary_dark">#FF00A88A</color>
     <color name="swift_primary_light">#FF33D4B9</color>
+    <color name="swift_primary_variant">#FF004E41</color>
     <color name="swift_secondary">#FF845EF7</color>
     <color name="swift_secondary_dark">#FF6B3FD4</color>
     <color name="swift_accent">#FF00B4D8</color>

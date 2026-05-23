@@ -1,5 +1,6 @@
 package com.example.swift_app.repositories;
 
+import androidx.annotation.NonNull;
 import com.example.swift_app.models.Transaction;
 import com.example.swift_app.models.Wallet;
 import com.example.swift_app.network.ApiClient;
@@ -24,7 +25,7 @@ public class WalletRepository {
         // 1. Get user's primary wallet
         ApiClient.getSupabaseApi().getWallets("eq." + userId).enqueue(new Callback<List<Wallet>>() {
             @Override
-            public void onResponse(Call<List<Wallet>> call, Response<List<Wallet>> response) {
+            public void onResponse(@NonNull Call<List<Wallet>> call, @NonNull Response<List<Wallet>> response) {
                 if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
                     Wallet wallet = response.body().get(0);
                     getLatestTransactionAndProceed(wallet, amount, callback);
@@ -34,7 +35,7 @@ public class WalletRepository {
             }
 
             @Override
-            public void onFailure(Call<List<Wallet>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<Wallet>> call, @NonNull Throwable t) {
                 callback.onError(t.getMessage());
             }
         });
@@ -45,7 +46,7 @@ public class WalletRepository {
         ApiClient.getSupabaseApi().getTransactions("sender_id.eq." + wallet.getUserId() + ",recipient_id.eq." + wallet.getUserId(), "created_at.desc", 1)
                 .enqueue(new Callback<List<Transaction>>() {
                     @Override
-                    public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {
+                    public void onResponse(@NonNull Call<List<Transaction>> call, @NonNull Response<List<Transaction>> response) {
                         String prevHash = HashChainService.getGenesisHash();
                         if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
                             prevHash = response.body().get(0).getCurrentHash();
@@ -55,7 +56,7 @@ public class WalletRepository {
                     }
 
                     @Override
-                    public void onFailure(Call<List<Transaction>> call, Throwable t) {
+                    public void onFailure(@NonNull Call<List<Transaction>> call, @NonNull Throwable t) {
                         // Even if fails, we might start a new chain with genesis
                         executeDeposit(wallet, amount, HashChainService.getGenesisHash(), callback);
                     }
@@ -78,7 +79,7 @@ public class WalletRepository {
 
         ApiClient.getSupabaseApi().createTransaction(tx).enqueue(new Callback<List<Transaction>>() {
             @Override
-            public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {
+            public void onResponse(@NonNull Call<List<Transaction>> call, @NonNull Response<List<Transaction>> response) {
                 if (response.isSuccessful()) {
                     // 4. Update Balance
                     updateBalance(wallet, amount, tx, callback);
@@ -88,7 +89,7 @@ public class WalletRepository {
             }
 
             @Override
-            public void onFailure(Call<List<Transaction>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<Transaction>> call, @NonNull Throwable t) {
                 callback.onError(t.getMessage());
             }
         });
@@ -96,11 +97,12 @@ public class WalletRepository {
 
     private void updateBalance(Wallet wallet, double amount, Transaction tx, WalletCallback<Transaction> callback) {
         Map<String, Object> updates = new HashMap<>();
-        updates.put("balance", wallet.getBalance() + amount);
+        // Defaulting to usd_balance for repository deposits
+        updates.put("usd_balance", wallet.getUsdBalance() + amount);
 
         ApiClient.getSupabaseApi().updateWallet("eq." + wallet.getId(), updates).enqueue(new Callback<List<Wallet>>() {
             @Override
-            public void onResponse(Call<List<Wallet>> call, Response<List<Wallet>> response) {
+            public void onResponse(@NonNull Call<List<Wallet>> call, @NonNull Response<List<Wallet>> response) {
                 if (response.isSuccessful()) {
                     callback.onSuccess(tx);
                 } else {
@@ -109,7 +111,7 @@ public class WalletRepository {
             }
 
             @Override
-            public void onFailure(Call<List<Wallet>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<Wallet>> call, @NonNull Throwable t) {
                 callback.onError(t.getMessage());
             }
         });

@@ -2,6 +2,7 @@ package com.example.swift_app.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -10,6 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.swift_app.R;
@@ -20,14 +22,17 @@ import com.example.swift_app.utils.SessionManager;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
 
+    private static final String TAG = "RegisterActivity";
     private TextInputEditText etFullName, etEmail, etPhone, etPassword, etConfirmPassword;
     private AutoCompleteTextView actvCountry, actvCurrency;
     private Button btnRegister;
@@ -71,6 +76,9 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void attemptRegister() {
+        if (etFullName.getText() == null || etEmail.getText() == null || 
+            etPassword.getText() == null || etConfirmPassword.getText() == null) return;
+
         String name = etFullName.getText().toString().trim();
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
@@ -90,17 +98,19 @@ public class RegisterActivity extends AppCompatActivity {
         progress.setVisibility(View.VISIBLE);
 
         // 1. First, register user in Supabase Auth (GoTrue)
-        Map<String, String> creds = new HashMap<>();
-        creds.put("email", email);
-        creds.put("password", password);
+        Map<String, String> credentials = new HashMap<>();
+        credentials.put("email", email);
+        credentials.put("password", password);
 
-        ApiClient.getAuthApi().signUp(creds).enqueue(new Callback<Map<String, Object>>() {
+        ApiClient.getAuthApi().signUp(credentials).enqueue(new Callback<Map<String, Object>>() {
             @Override
-            public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+            public void onResponse(@NonNull Call<Map<String, Object>> call, @NonNull Response<Map<String, Object>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Map<String, Object> userMap = (Map<String, Object>) response.body().get("user");
+                    Map<String, Object> body = response.body();
+                    @SuppressWarnings("unchecked")
+                    Map<String, Object> userMap = (Map<String, Object>) body.get("user");
                     String userId = userMap != null ? (String) userMap.get("id") : null;
-                    String accessToken = (String) response.body().get("access_token");
+                    String accessToken = (String) body.get("access_token");
 
                     if (userId != null) {
                         if (accessToken != null) {
@@ -112,16 +122,16 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 } else {
                     String errorMsg = "Registration failed";
-                    try {
-                        if (response.errorBody() != null) {
-                            Map<String, Object> errorMap = new com.google.gson.Gson().fromJson(
-                                    response.errorBody().charStream(), Map.class);
+                    try (ResponseBody errorBody = response.errorBody()) {
+                        if (errorBody != null) {
+                            @SuppressWarnings("unchecked")
+                            Map<String, Object> errorMap = new com.google.gson.Gson().fromJson(errorBody.charStream(), Map.class);
                             if (errorMap != null && errorMap.containsKey("msg")) {
                                 errorMsg = (String) errorMap.get("msg");
                             }
                         }
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        Log.e(TAG, "Error parsing registration failure", e);
                     }
                     onAuthError(errorMsg);
                 }
@@ -134,7 +144,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+            public void onFailure(@NonNull Call<Map<String, Object>> call, @NonNull Throwable t) {
                 btnRegister.setVisibility(View.VISIBLE);
                 progress.setVisibility(View.GONE);
                 Toast.makeText(RegisterActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
@@ -143,32 +153,29 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void createDataProfile(String userId, String name, String email, String token) {
+        User user = new User();
+        user.setId(userId);
+        user.setEmail(email);
+        user.setFullName(name);
+        user.setRole("user");
+        user.setKycStatus("pending");
+        user.setPhone(etPhone.getText() != null ? etPhone.getText().toString() : "");
+        user.setCountry(actvCountry.getText() != null ? actvCountry.getText().toString() : "");
 
-        User newUser = new User();
-        newUser.setId(userId); // Use the Auth ID
-        newUser.setFullName(name);
-        newUser.setEmail(email);
-        newUser.setPhone(etPhone.getText().toString());
-        newUser.setCountry(actvCountry.getText().toString());
-        newUser.setPreferredCurrency(actvCurrency.getText().toString());
-        newUser.setKycStatus(Constants.KYC_PENDING);
-
-        ApiClient.getSupabaseApi().createProfile(newUser).enqueue(new Callback<java.util.List<User>>() {
+        ApiClient.getSupabaseApi().createProfile(user).enqueue(new Callback<List<User>>() {
             @Override
-            public void onResponse(Call<java.util.List<User>> call, Response<java.util.List<User>> response) {
-                btnRegister.setVisibility(View.VISIBLE);
-                progress.setVisibility(View.GONE);
-
+            public void onResponse(@NonNull Call<List<User>> call, @NonNull Response<List<User>> response) {
                 if (response.isSuccessful()) {
-                    sessionManager.saveSession(token, userId, email, name);
-                    createDefaultWallet(userId, token);
+                    createUnifiedWallet(userId, email, name, token);
                 } else {
-                    Toast.makeText(RegisterActivity.this, "Profile creation failed (check RLS)", Toast.LENGTH_SHORT).show();
+                    btnRegister.setVisibility(View.VISIBLE);
+                    progress.setVisibility(View.GONE);
+                    Toast.makeText(RegisterActivity.this, "Profile setup failed", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<java.util.List<User>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<User>> call, @NonNull Throwable t) {
                 btnRegister.setVisibility(View.VISIBLE);
                 progress.setVisibility(View.GONE);
                 Toast.makeText(RegisterActivity.this, "Network error during profile creation", Toast.LENGTH_SHORT).show();
@@ -176,29 +183,31 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private void createDefaultWallet(String userId, String token) {
-        com.example.swift_app.models.Wallet defaultWallet = new com.example.swift_app.models.Wallet();
-        defaultWallet.setUserId(userId);
-        defaultWallet.setCurrency(actvCurrency.getText().toString().isEmpty() ? "USD" : actvCurrency.getText().toString());
-        defaultWallet.setBalance(100.0); // Start with $100 for demo purposes
+    private void createUnifiedWallet(String userId, String email, String fullName, String token) {
+        com.example.swift_app.models.Wallet wallet = new com.example.swift_app.models.Wallet();
+        wallet.setUserId(userId);
+        wallet.setInrBalance(0.0);
+        wallet.setUsdBalance(0.0);
+        wallet.setAedBalance(0.0);
 
-        ApiClient.getSupabaseApi().createWallet(defaultWallet).enqueue(new Callback<java.util.List<com.example.swift_app.models.Wallet>>() {
+        ApiClient.getSupabaseApi().createWallet(wallet).enqueue(new Callback<List<com.example.swift_app.models.Wallet>>() {
             @Override
-            public void onResponse(Call<java.util.List<com.example.swift_app.models.Wallet>> call, Response<java.util.List<com.example.swift_app.models.Wallet>> response) {
+            public void onResponse(@NonNull Call<List<com.example.swift_app.models.Wallet>> call, @NonNull Response<List<com.example.swift_app.models.Wallet>> response) {
+                sessionManager.saveSession(token != null ? token : "mock_token", userId, email, fullName);
+                Toast.makeText(RegisterActivity.this, "Welcome to SwiftX!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
+                finish();
             }
 
             @Override
-            public void onFailure(Call<java.util.List<com.example.swift_app.models.Wallet>> call, Throwable t) {
-                // Still proceed to main, the user can create a wallet later or retry
-                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+            public void onFailure(@NonNull Call<List<com.example.swift_app.models.Wallet>> call, @NonNull Throwable t) {
+                // Proceed anyway - wallet can be provisioned by admin if it fails
+                sessionManager.saveSession(token != null ? token : "mock_token", userId, email, fullName);
+                startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                finish();
             }
         });
     }
-
-
 }

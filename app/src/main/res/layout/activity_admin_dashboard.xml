@@ -17,14 +17,15 @@
             android:layout_height="40dp"
             android:background="@drawable/bg_circle_surface"
             android:src="@drawable/ic_back"
-            app:tint="@color/white" />
+            app:tint="@color/white"
+            android:contentDescription="@string/cd_back" />
 
         <TextView
             style="@style/SwiftText.Hero"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="Admin Center"
+            android:text="@string/label_admin_center"
             android:textSize="20sp" />
     </RelativeLayout>
 
@@ -33,16 +34,37 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="KYC Review Queue" />
+        android:text="@string/label_kyc_queue" />
 
     <TextView
         style="@style/SwiftText.Caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Review and approve user identification requests" />
+        android:text="@string/desc_kyc_queue" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@android:color/transparent"
+        app:tabIndicatorColor="@color/swift_primary"
+        app:tabSelectedTextColor="@color/swift_primary"
+        app:tabTextColor="@color/swift_text_secondary">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tab_kyc_queue" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tab_security_audit" />
+    </com.google.android.material.tabs.TabLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvKycRequests"
+        android:id="@+id/rvRequests"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"

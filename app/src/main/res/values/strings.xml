@@ -115,6 +115,7 @@
     <string name="confirm">Confirm</string>
     <string name="back">Back</string>
     <string name="close">Close</string>
+
     <!-- Add Funds Screen -->
     <string name="title_deposit">Deposit</string>
     <string name="label_enter_amount">Enter Amount</string>
@@ -147,4 +148,47 @@
     <string name="msg_invalid_amount">Invalid amount</string>
     <string name="error_message_prefix">Error: %1$s</string>
 
+    <!-- Dashboard Strings -->
+    <string name="welcome_back_comma">Welcome back,</string>
+    <string name="default_user">User</string>
+    <string name="default_avatar">U</string>
+    <string name="swiftx_id_label">SwiftX ID</string>
+    <string name="swiftx_id_placeholder">SX-----</string>
+    <string name="swiftx_id_description">Your global handle for borderless payments</string>
+    <string name="unified_balance_snapshot">Unified Balance Snapshot</string>
+    <string name="currency_usd">🇺🇸 USD</string>
+    <string name="currency_inr">🇮🇳 INR</string>
+    <string name="currency_vault">💎 VAULT</string>
+    <string name="zero_balance_usd">$0.00</string>
+    <string name="zero_balance_inr">₹0.00</string>
+    <string name="live_conversion_active">Live conversion rates active</string>
+    <string name="yield_active">✨ 6.5% Yield active</string>
+    <string name="admin_dashboard_title">Admin Dashboard</string>
+    <string name="admin_dashboard_desc">Review pending KYC and AML flags</string>
+    <string name="ai_insight_default">Based on your spending patterns, you could save $120/month by optimizing your transfer schedule.</string>
+    <string name="cd_copy_id">Copy SwiftX ID</string>
+    <string name="cd_avatar">User Avatar</string>
+    <string name="cd_admin">Admin Icon</string>
+    <string name="cd_rate">Rate Icon</string>
+    <string name="cd_ai_icon">AI Insight Icon</string>
+
+    <!-- Send Money Strings -->
+    <string name="label_send_money">Send Money</string>
+    <string name="desc_send_money">Fast, secure, and fee-free transfers.</string>
+    <string name="hint_recipient_full">Recipient (Email or RM ID)</string>
+    <string name="hint_amount_to_send">Amount to Send</string>
+    <string name="label_exchange_rate">Exchange Rate</string>
+    <string name="label_platform_fees">Platform Fees (2.35%)</string>
+    <string name="label_recipient_gets">Recipient Gets</string>
+    <string name="label_aml_verified">Hash-chain integrity verified by SwiftNode</string>
+    <string name="btn_verify_send">Verify &amp; Send</string>
+    <string name="cd_back_arrow">Back Arrow</string>
+    <string name="format_fx_rate">1 %1$s = %2$.2f %3$s</string>
+
+    <!-- Admin Center -->
+    <string name="label_admin_center">Admin Center</string>
+    <string name="label_kyc_queue">KYC Review Queue</string>
+    <string name="desc_kyc_queue">Review and approve user identification requests</string>
+    <string name="tab_kyc_queue">KYC Queue</string>
+    <string name="tab_security_audit">Security Audit</string>
 </resources>

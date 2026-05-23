@@ -3,6 +3,7 @@ package com.example.swift_app.activities;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,10 +38,9 @@ public class ContactsActivity extends AppCompatActivity {
 
     private void fetchContacts() {
         // For this demo, we fetch all profiles as potential contacts
-        // In reality, this would be a specific 'contacts' table join
         ApiClient.getSupabaseApi().getProfiles().enqueue(new Callback<List<User>>() {
             @Override
-            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+            public void onResponse(@NonNull Call<List<User>> call, @NonNull Response<List<User>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     ContactAdapter adapter = new ContactAdapter(response.body(), contact -> {
                         Intent result = new Intent();
@@ -53,7 +53,9 @@ public class ContactsActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<User>> call, Throwable t) {}
+            public void onFailure(@NonNull Call<List<User>> call, @NonNull Throwable t) {
+                // Error handling could be added here
+            }
         });
     }
 }

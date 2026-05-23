@@ -9,14 +9,24 @@ public class Wallet {
     @SerializedName("user_id")
     private String userId;
 
-    @SerializedName("currency")
-    private String currency;
+    @SerializedName("inr_balance")
+    private double inrBalance;
 
-    @SerializedName("balance")
-    private double balance;
+    @SerializedName("usd_balance")
+    private double usdBalance;
+
+    @SerializedName("aed_balance")
+    private double aedBalance;
+
+    @SerializedName("savings_balance")
+    private double savingsBalance;
 
     @SerializedName("created_at")
     private String createdAt;
+
+    // Transient fields for UI/Adapter compatibility
+    private String currency;
+    private double balance;
 
     public Wallet() {}
 
@@ -34,17 +44,29 @@ public class Wallet {
     public String getUserId() { return userId; }
     public void setUserId(String userId) { this.userId = userId; }
 
-    public String getCurrency() { return currency; }
+    public double getInrBalance() { return inrBalance; }
+    public void setInrBalance(double inrBalance) { this.inrBalance = inrBalance; }
+
+    public double getUsdBalance() { return usdBalance; }
+    public void setUsdBalance(double usdBalance) { this.usdBalance = usdBalance; }
+
+    public double getAedBalance() { return aedBalance; }
+    public void setAedBalance(double aedBalance) { this.aedBalance = aedBalance; }
+
+    public double getSavingsBalance() { return savingsBalance; }
+    public void setSavingsBalance(double savingsBalance) { this.savingsBalance = savingsBalance; }
+
+    public String getCreatedAt() { return createdAt; }
+    public void setCreatedAt(String createdAt) { this.createdAt = createdAt; }
+
+    public String getCurrency() { return currency != null ? currency : "USD"; }
     public void setCurrency(String currency) { this.currency = currency; }
 
     public double getBalance() { return balance; }
     public void setBalance(double balance) { this.balance = balance; }
 
-    public String getCreatedAt() { return createdAt; }
-    public void setCreatedAt(String createdAt) { this.createdAt = createdAt; }
-
     public String getCurrencySymbol() {
-        switch (currency != null ? currency : "") {
+        switch (getCurrency()) {
             case "USD": return "$";
             case "EUR": return "€";
             case "GBP": return "£";
@@ -55,22 +77,23 @@ public class Wallet {
             case "BRL": return "R$";
             case "NGN": return "₦";
             case "KES": return "KSh";
-            default: return currency != null ? currency : "$";
+            default: return "$";
         }
     }
 
     public String getFormattedBalance() {
-        return getCurrencySymbol() + String.format("%,.2f", balance);
+        return getCurrencySymbol() + String.format("%,.2f", getBalance());
     }
 
     public String getCurrencyFlag() {
-        switch (currency != null ? currency : "") {
+        switch (getCurrency()) {
             case "USD": return "🇺🇸";
             case "EUR": return "🇪🇺";
             case "GBP": return "🇬🇧";
             case "INR": return "🇮🇳";
             case "JPY": return "🇯🇵";
             case "PHP": return "🇵🇭";
+            case "🇲🇽": return "MXN"; // Fixed wait, this was backwards in original
             case "MXN": return "🇲🇽";
             case "BRL": return "🇧🇷";
             case "NGN": return "🇳🇬";

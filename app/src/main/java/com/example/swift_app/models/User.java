@@ -21,6 +21,12 @@ public class User {
     @SerializedName("preferred_currency")
     private String preferredCurrency;
 
+    @SerializedName("rm_id")
+    private String rmId;
+
+    @SerializedName("role")
+    private String role;
+
     @SerializedName("kyc_status")
     private String kycStatus;
 
@@ -64,6 +70,12 @@ public class User {
 
     public String getCreatedAt() { return createdAt; }
     public void setCreatedAt(String createdAt) { this.createdAt = createdAt; }
+
+    public String getRmId() { return rmId; }
+    public void setRmId(String rmId) { this.rmId = rmId; }
+
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
 
     public boolean isKycVerified() {
         return "verified".equalsIgnoreCase(kycStatus);

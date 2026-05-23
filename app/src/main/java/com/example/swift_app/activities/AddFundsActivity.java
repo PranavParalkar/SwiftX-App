@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,11 +21,12 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.Locale;
+
 public class AddFundsActivity extends AppCompatActivity {
 
     private TextInputEditText etAmount;
     private MaterialButton btnAdd;
-    private ChipGroup chipGroup;
     private SessionManager sessionManager;
     private WalletRepository walletRepository;
 
@@ -43,12 +45,12 @@ public class AddFundsActivity extends AppCompatActivity {
     private void initViews() {
         etAmount = findViewById(R.id.etAmount);
         btnAdd = findViewById(R.id.btnAddFunds);
-        chipGroup = findViewById(R.id.chipGroupAmounts);
-
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
     }
 
     private void setupListeners() {
+        ChipGroup chipGroup = findViewById(R.id.chipGroupAmounts); // Local variable as requested
+        
         // Quick amounts
         chipGroup.setOnCheckedStateChangeListener((group, checkedIds) -> {
             if (!checkedIds.isEmpty()) {
@@ -67,13 +69,9 @@ public class AddFundsActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                boolean hasAmount = s.length() > 0;
+                boolean hasAmount = s != null && s.length() > 0;
                 btnAdd.setEnabled(hasAmount);
-                if (hasAmount) {
-                    btnAdd.setAlpha(1.0f);
-                } else {
-                    btnAdd.setAlpha(0.5f);
-                }
+                btnAdd.setAlpha(hasAmount ? 1.0f : 0.5f);
             }
 
             @Override
@@ -81,6 +79,7 @@ public class AddFundsActivity extends AppCompatActivity {
         });
 
         btnAdd.setOnClickListener(v -> {
+            if (etAmount.getText() == null) return;
             String amountStr = etAmount.getText().toString().trim();
             if (amountStr.isEmpty()) return;
 
@@ -113,7 +112,7 @@ public class AddFundsActivity extends AppCompatActivity {
         btnAdd.setEnabled(false);
         btnAdd.setText(R.string.btn_processing_ledger);
 
-        walletRepository.depositFunds(sessionManager.getUserId(), amount, new WalletRepository.WalletCallback<>() {
+        walletRepository.depositFunds(sessionManager.getUserId(), amount, new WalletRepository.WalletCallback<Transaction>() {
             @Override
             public void onSuccess(Transaction result) {
                 showSuccessDialog(result);
@@ -130,14 +129,14 @@ public class AddFundsActivity extends AppCompatActivity {
     }
 
     private void showAmlBlockDialog(AmlRulesEngine.AmlResult result) {
-        String message = getString(R.string.msg_aml_block, result.getTriggeredRules().get(0));
+        String rule = (result.getTriggeredRules() != null && !result.getTriggeredRules().isEmpty()) 
+                      ? result.getTriggeredRules().get(0) : "Unknown Rule";
+        String message = getString(R.string.msg_aml_block, rule);
+        
         new AlertDialog.Builder(this)
                 .setTitle(R.string.title_limit_reached)
                 .setMessage(message)
-                .setPositiveButton(R.string.btn_verify_identity, (d, w) -> {
-                    // Navigate to KYC
-                    finish();
-                })
+                .setPositiveButton(R.string.btn_verify_identity, (d, w) -> finish())
                 .setNegativeButton(R.string.btn_cancel, null)
                 .show();
     }

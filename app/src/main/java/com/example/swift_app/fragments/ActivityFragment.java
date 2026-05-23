@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,7 +29,7 @@ public class ActivityFragment extends Fragment {
     private SessionManager sessionManager;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_activity, container, false);
         rvFullHistory = view.findViewById(R.id.rvFullHistory);
         rvFullHistory.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -42,24 +44,25 @@ public class ActivityFragment extends Fragment {
         String orFilter = "sender_id.eq." + userId + ",recipient_id.eq." + userId;
         ApiClient.getSupabaseApi().getTransactions(orFilter, "created_at.desc", 100).enqueue(new Callback<List<Transaction>>() {
             @Override
-            public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {
+            public void onResponse(@NonNull Call<List<Transaction>> call, @NonNull Response<List<Transaction>> response) {
                 if (!isAdded()) return;
-                if (response.isSuccessful() && response.body() != null) {
+                View v = getView();
+                if (v != null && response.isSuccessful() && response.body() != null) {
                     List<Transaction> txns = response.body();
+                    View emptyState = v.findViewById(R.id.llEmptyState);
                     if (txns.isEmpty()) {
-                        getView().findViewById(R.id.llEmptyState).setVisibility(View.VISIBLE);
-                        getView().findViewById(R.id.rvFullHistory).setVisibility(View.GONE);
+                        if (emptyState != null) emptyState.setVisibility(View.VISIBLE);
+                        rvFullHistory.setVisibility(View.GONE);
                     } else {
-                        getView().findViewById(R.id.llEmptyState).setVisibility(View.GONE);
-                        getView().findViewById(R.id.rvFullHistory).setVisibility(View.VISIBLE);
+                        if (emptyState != null) emptyState.setVisibility(View.GONE);
+                        rvFullHistory.setVisibility(View.VISIBLE);
                         rvFullHistory.setAdapter(new TransactionAdapter(txns, userId));
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<List<Transaction>> call, Throwable t) {}
+            public void onFailure(@NonNull Call<List<Transaction>> call, @NonNull Throwable t) {}
         });
     }
-
 }

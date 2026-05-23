@@ -13,20 +13,21 @@
         android:layout_height="48dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@android:drawable/ic_menu_revert"
-        app:tint="@color/white" />
+        app:tint="@color/white"
+        android:contentDescription="@string/cd_back_arrow" />
 
     <TextView
         style="@style/SwiftText.Hero"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Send Money" />
+        android:text="@string/label_send_money" />
 
     <TextView
         style="@style/SwiftText.Body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Fast, secure, and fee-free transfers." />
+        android:text="@string/desc_send_money" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilRecipient"
@@ -34,16 +35,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:hint="Recipient Email"
+        android:hint="@string/hint_recipient_full"
         app:endIconDrawable="@android:drawable/ic_menu_myplaces"
         app:endIconMode="custom"
         app:endIconTint="@color/swift_primary">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etRecipientEmail"
+            android:id="@+id/etRecipient"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
+            android:inputType="text"
             android:textColor="@color/white" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -53,7 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:hint="Amount ($)">
+        android:hint="@string/hint_amount_to_send">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etAmount"
@@ -63,25 +64,92 @@
             android:textColor="@color/white" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/tvConvertedAmount"
-        android:layout_width="wrap_content"
+    <!-- Fee Breakdown -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cvFeeBreakdown"
+        style="@style/SwiftCard"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="≈ 0.00 EUR"
-        android:textColor="@color/swift_primary"
-        android:textSize="14sp"
-        android:visibility="gone" />
+        android:layout_marginTop="20dp"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_exchange_rate"
+                    style="@style/SwiftText.Caption" />
+                <TextView
+                    android:id="@+id/tvRate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="1 USD = 85.80 INR"
+                    style="@style/SwiftText.Body" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_platform_fees"
+                    style="@style/SwiftText.Caption" />
+                <TextView
+                    android:id="@+id/tvFee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="@string/zero_balance_usd"
+                    style="@style/SwiftText.Body" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="12dp"
+                android:background="@color/swift_divider" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_recipient_gets"
+                    style="@style/SwiftText.Title"
+                    android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/tvRecipientGets"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="@string/zero_balance_inr"
+                    style="@style/SwiftText.Title"
+                    android:textColor="@color/swift_success" />
+            </RelativeLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <TextView
         android:id="@+id/tvAmlWarning"
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Transaction subject to AML verification"
-        android:textColor="@color/swift_text_hint"
-        android:textSize="12sp" />
+        android:layout_marginTop="12dp"
+        android:text="@string/label_aml_verified"
+        android:textColor="@color/swift_primary"
+        android:textSize="11sp" />
 
     <View
         android:layout_width="match_parent"
@@ -93,7 +161,7 @@
         style="@style/SwiftButton.Primary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Verify &amp; Send" />
+        android:text="@string/btn_verify_send" />
 
     <ProgressBar
         android:id="@+id/sendProgress"

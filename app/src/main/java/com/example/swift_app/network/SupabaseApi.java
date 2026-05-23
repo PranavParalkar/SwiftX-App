@@ -4,7 +4,7 @@ import com.example.swift_app.models.Transaction;
 import com.example.swift_app.models.User;
 import com.example.swift_app.models.Wallet;
 import com.example.swift_app.models.PolygonAnchor;
-
+import com.example.swift_app.models.AuditLog;
 
 import java.util.List;
 import java.util.Map;
@@ -23,8 +23,11 @@ public interface SupabaseApi {
     Call<List<User>> getProfiles();
 
     @GET("profiles")
-    Call<List<User>> getProfile(@Query("id") String idFilter);
+    Call<List<User>> getProfileByAny(@Query("or") String orFilter);
 
+    // Added to resolve "getProfile" missing error
+    @GET("profiles")
+    Call<List<User>> getProfile(@Query("id") String idFilter);
 
     @POST("profiles")
     Call<List<User>> createProfile(@Body User user);
@@ -66,5 +69,11 @@ public interface SupabaseApi {
 
     @POST("token?grant_type=password")
     Call<Map<String, Object>> signIn(@Body Map<String, String> credentials);
-}
 
+    // RPCs
+    @POST("rpc/execute_transfer")
+    Call<String> executeTransfer(@Body Map<String, Object> params);
+
+    @GET("audit_logs")
+    Call<List<AuditLog>> getAuditLogs(@Query("order") String order, @Query("limit") int limit);
+}

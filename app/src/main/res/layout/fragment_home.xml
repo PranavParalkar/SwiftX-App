@@ -3,214 +3,295 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/swift_bg_primary">
+    android:background="@color/swift_bg_primary"
+    android:scrollbars="none">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/spacing_lg"
-        android:paddingTop="48dp">
-
+        android:padding="24dp">
 
         <!-- Header -->
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="28dp"
-            android:layout_marginTop="10dp">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tvGreeting"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Welcome back,"
+                    android:text="@string/welcome_back_comma"
                     android:textColor="@color/swift_text_secondary"
-                    android:textSize="@dimen/text_sm" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tvUserName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="User"
-                    android:textColor="@color/swift_text_primary"
-                    android:textSize="@dimen/text_xxl"
                     android:fontFamily="sans-serif-bold"
-                    android:layout_marginTop="2dp" />
+                    android:text="@string/default_user"
+                    android:textColor="@color/white"
+                    android:textSize="22sp" />
             </LinearLayout>
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cvAvatar"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_alignParentEnd="true"
-                app:cardCornerRadius="16dp"
-                app:cardBackgroundColor="@color/swift_bg_secondary"
-                app:strokeWidth="1dp"
-                app:strokeColor="@color/swift_divider">
+            <TextView
+                android:id="@+id/tvAvatarInitial"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:background="@drawable/bg_icon_circle"
+                android:gravity="center"
+                android:text="@string/default_avatar"
+                android:textColor="@color/swift_primary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:contentDescription="@string/cd_avatar" />
+        </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tvAvatarInitial"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="U"
-                    android:textColor="@color/swift_primary"
-                    android:textSize="@dimen/text_xl"
-                    android:fontFamily="sans-serif-bold" />
-            </com.google.android.material.card.MaterialCardView>
-        </RelativeLayout>
-
-        <!-- Balance Card -->
+        <!-- Borderless Identity Card -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            app:cardCornerRadius="24dp"
-            app:cardElevation="8dp">
+            android:layout_marginTop="28dp"
+            style="@style/SwiftCard">
 
-            <FrameLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_gradient_primary"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/tvRmIdLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/swiftx_id_label"
+                    android:textColor="@color/swift_text_secondary"
+                    android:textSize="12sp"
+                    android:fontFamily="sans-serif-medium" />
+
+                <LinearLayout
+                    android:id="@+id/llRmIdContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvRmIdLabel"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvRmId"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/swiftx_id_placeholder"
+                        android:textColor="@color/white"
+                        android:textSize="22sp"
+                        android:fontFamily="sans-serif-black"
+                        android:letterSpacing="0.05" />
+
+                    <ImageButton
+                        android:id="@+id/btnCopyRmId"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_copy"
+                        app:tint="@color/swift_primary"
+                        android:contentDescription="@string/cd_copy_id" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/llRmIdContainer"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/swiftx_id_description"
+                    android:textColor="@color/swift_text_hint"
+                    android:textSize="11sp" />
+            </RelativeLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Unified Balance Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="0dp"
+            android:backgroundTint="@color/swift_primary_variant">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:padding="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/unified_balance_snapshot"
+                    android:textColor="#CCFFFFFF"
+                    android:textSize="@dimen/text_sm" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal"
+                    android:baselineAligned="false">
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
+                    <!-- USD -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/total_balance"
-                            android:textColor="#CCFFFFFF"
-                            android:textSize="@dimen/text_sm" />
+                            android:text="@string/currency_usd"
+                            android:textColor="#B3FFFFFF"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/tvUsdBalance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/zero_balance_usd"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"
+                            android:fontFamily="sans-serif-bold" />
+                    </LinearLayout>
 
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_alignParentEnd="true"
-                            android:src="@android:drawable/ic_menu_send"
-                            android:tint="#99FFFFFF" />
-                    </RelativeLayout>
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="12dp"
+                        android:background="#33FFFFFF" />
+
+                    <!-- INR -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/currency_inr"
+                            android:textColor="#B3FFFFFF"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/tvInrBalance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/zero_balance_inr"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"
+                            android:fontFamily="sans-serif-bold" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="12dp"
+                        android:background="#33FFFFFF" />
+
+                    <!-- VAULT -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/currency_vault"
+                            android:textColor="#B3FFFFFF"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/tvVaultBalance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/zero_balance_usd"
+                            android:textColor="@color/swift_success"
+                            android:textSize="18sp"
+                            android:fontFamily="sans-serif-bold" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp">
 
                     <TextView
-                        android:id="@+id/tvTotalBalance"
+                        android:id="@+id/tvLiveRates"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="$0.00"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/text_hero"
-                        android:fontFamily="sans-serif-bold" />
+                        android:layout_alignParentStart="true"
+                        android:layout_toStartOf="@+id/tvYieldBadge"
+                        android:layout_marginEnd="8dp"
+                        app:drawableStartCompat="@android:drawable/ic_lock_lock"
+                        android:drawablePadding="6dp"
+                        app:drawableTint="#CCFFFFFF"
+                        android:text="@string/live_conversion_active"
+                        android:textColor="#CCFFFFFF"
+                        android:textSize="@dimen/text_xs"
+                        android:gravity="center_vertical" />
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/tvYieldBadge"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_width="14dp"
-                                android:layout_height="14dp"
-                                android:src="@android:drawable/ic_lock_lock"
-                                android:tint="#CCFFFFFF" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="6dp"
-                                android:text="Secured by blockchain"
-                                android:textColor="#CCFFFFFF"
-                                android:textSize="@dimen/text_xs" />
-                        </LinearLayout>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:background="@drawable/bg_status_success"
-                            android:paddingHorizontal="10dp"
-                            android:paddingVertical="4dp"
-                            android:text="✨ Zero-Fee Active"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/text_xs"
-                            android:fontFamily="sans-serif-bold" />
-                    </RelativeLayout>
-                </LinearLayout>
-            </FrameLayout>
+                        android:layout_alignParentEnd="true"
+                        android:background="@drawable/bg_status_success"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="4dp"
+                        android:text="@string/yield_active"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_xs"
+                        android:fontFamily="sans-serif-bold" />
+                </RelativeLayout>
+            </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Admin Dashboard Section (Visible only to Admins) -->
+        <!-- Admin Dashboard Section -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cvAdminPanel"
             style="@style/SwiftCard.Elevated"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
+            android:layout_marginTop="16dp"
             android:visibility="gone">
 
-            <LinearLayout
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="20dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="20dp">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@android:drawable/ic_lock_lock"
-                    app:tint="@color/swift_secondary" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        style="@style/SwiftText.Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Admin Dashboard"
-                        android:textSize="18sp" />
-
-                    <TextView
-                        style="@style/SwiftText.Caption"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Review pending KYC and AML flags" />
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@android:drawable/ic_menu_edit"
-                    app:tint="@color/swift_text_secondary" />
-            </LinearLayout>
+                app:drawableStartCompat="@android:drawable/ic_menu_manage"
+                android:drawablePadding="16dp"
+                app:drawableTint="@color/swift_secondary"
+                android:text="@string/admin_dashboard_title"
+                style="@style/SwiftText.Title"
+                android:textSize="18sp"
+                app:drawableEndCompat="@android:drawable/ic_media_play" />
         </com.google.android.material.card.MaterialCardView>
 
         <!-- Quick Actions -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
             android:text="@string/quick_actions"
             android:textColor="@color/swift_text_primary"
             android:textSize="@dimen/text_xl"
@@ -226,33 +307,28 @@
             <!-- Send -->
             <LinearLayout
                 android:id="@+id/btnSendMoney"
-
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_columnWeight="1"
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <FrameLayout
+                <ImageView
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:background="@drawable/bg_card">
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_send"
-                        app:tint="@color/swift_primary" />
-                </FrameLayout>
+                    android:background="@drawable/bg_card"
+                    android:padding="18dp"
+                    android:src="@drawable/ic_send"
+                    app:tint="@color/swift_primary"
+                    android:contentDescription="@string/send_money" />
 
-                
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="@string/send_money"
                     android:textColor="@color/swift_text_secondary"
-                    android:textSize="@dimen/text_xs"
+                    android:textSize="11sp"
                     android:fontFamily="sans-serif-medium" />
             </LinearLayout>
 
@@ -265,18 +341,14 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <FrameLayout
+                <ImageView
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:background="@drawable/bg_card">
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_receive"
-                        app:tint="@color/swift_primary" />
-                </FrameLayout>
-
+                    android:background="@drawable/bg_card"
+                    android:padding="18dp"
+                    android:src="@drawable/ic_receive"
+                    app:tint="@color/swift_primary"
+                    android:contentDescription="@string/receive_money" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -284,7 +356,7 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/receive_money"
                     android:textColor="@color/swift_text_secondary"
-                    android:textSize="@dimen/text_xs"
+                    android:textSize="11sp"
                     android:fontFamily="sans-serif-medium" />
             </LinearLayout>
 
@@ -297,18 +369,14 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <FrameLayout
+                <ImageView
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:background="@drawable/bg_card">
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_add"
-                        app:tint="@color/swift_primary" />
-                </FrameLayout>
-
+                    android:background="@drawable/bg_card"
+                    android:padding="18dp"
+                    android:src="@drawable/ic_add"
+                    app:tint="@color/swift_primary"
+                    android:contentDescription="@string/add_funds" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -316,7 +384,7 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/add_funds"
                     android:textColor="@color/swift_text_secondary"
-                    android:textSize="@dimen/text_xs"
+                    android:textSize="11sp"
                     android:fontFamily="sans-serif-medium" />
             </LinearLayout>
 
@@ -329,18 +397,14 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <FrameLayout
+                <ImageView
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:background="@drawable/bg_card">
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_exchange"
-                        app:tint="@color/swift_primary" />
-                </FrameLayout>
-
+                    android:background="@drawable/bg_card"
+                    android:padding="18dp"
+                    android:src="@drawable/ic_exchange"
+                    app:tint="@color/swift_primary"
+                    android:contentDescription="@string/exchange" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -348,7 +412,7 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/exchange"
                     android:textColor="@color/swift_text_secondary"
-                    android:textSize="@dimen/text_xs"
+                    android:textSize="11sp"
                     android:fontFamily="sans-serif-medium" />
             </LinearLayout>
         </androidx.gridlayout.widget.GridLayout>
@@ -372,27 +436,22 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp">
 
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/tvAiHeader"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        app:drawableStartCompat="@android:drawable/ic_menu_send"
+                        android:drawablePadding="8dp"
+                        app:drawableTint="@color/swift_primary"
+                        android:text="@string/ai_insights"
+                        android:textColor="@color/swift_text_primary"
+                        android:textSize="@dimen/text_lg"
+                        android:fontFamily="sans-serif-bold"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:src="@android:drawable/ic_menu_send"
-                            android:tint="@color/swift_primary" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:text="@string/ai_insights"
-                            android:textColor="@color/swift_text_primary"
-                            android:textSize="@dimen/text_lg"
-                            android:fontFamily="sans-serif-bold" />
-                    </LinearLayout>
+                        android:contentDescription="@string/cd_ai_icon"
+                        android:layout_alignParentStart="true"
+                        android:layout_toStartOf="@+id/tvAiInsightLabel"
+                        android:layout_marginEnd="16dp" />
 
                     <TextView
                         android:id="@+id/tvAiInsightLabel"
@@ -403,7 +462,7 @@
                         android:backgroundTint="#1A00C9A7"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="3dp"
-                        android:text="Powered by AI"
+                        android:text="@string/powered_by_ai"
                         android:textColor="@color/swift_primary"
                         android:textSize="@dimen/text_xs"
                         android:fontFamily="sans-serif-bold" />
@@ -413,26 +472,30 @@
                     android:id="@+id/tvAiInsightDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Based on your spending patterns, you could save $120/month by optimizing your transfer schedule."
+                    android:text="@string/ai_insight_default"
                     android:textColor="@color/swift_text_secondary"
                     android:textSize="@dimen/text_md"
                     android:lineSpacingExtra="4dp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Recent Transactions -->
+        <!-- Recent Transactions Header -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp">
 
             <TextView
+                android:id="@+id/tvRecentTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/recent_transactions"
                 android:textColor="@color/swift_text_primary"
                 android:textSize="@dimen/text_xl"
-                android:fontFamily="sans-serif-bold" />
+                android:fontFamily="sans-serif-bold"
+                android:layout_toStartOf="@+id/tvViewAll"
+                android:layout_alignParentStart="true"
+                android:layout_marginEnd="16dp" />
 
             <TextView
                 android:id="@+id/tvViewAll"
@@ -451,7 +514,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false" />
-
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

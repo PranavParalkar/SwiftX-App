@@ -1,27 +1,26 @@
 package com.example.swift_app.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.swift_app.R;
-import com.example.swift_app.models.Transaction;
 import com.example.swift_app.models.User;
 import com.example.swift_app.network.ApiClient;
-import com.example.swift_app.services.AmlRulesEngine;
-import com.example.swift_app.services.HashChainService;
 import com.example.swift_app.utils.SessionManager;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -32,24 +31,14 @@ import retrofit2.Response;
 
 public class SendMoneyActivity extends AppCompatActivity {
 
+    private static final String TAG = "SendMoneyActivity";
     private TextInputEditText etRecipient, etAmount;
-    private TextView tvConvertedAmount;
     private Button btnSend;
     private ProgressBar progress;
     private SessionManager sessionManager;
-    private final String targetCurrency = "EUR"; // Default for demo
-
-    private final ActivityResultLauncher<Intent> contactsLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                    String email = result.getData().getStringExtra("selected_email");
-                    if (etRecipient != null) {
-                        etRecipient.setText(email);
-                    }
-                }
-            }
-    );
+    private MaterialCardView cvFeeBreakdown;
+    private TextView tvRate, tvFee, tvRecipientGets;
+    private final double currentRate = 85.80; // Default mock - made final as suggested
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,120 +47,76 @@ public class SendMoneyActivity extends AppCompatActivity {
 
         sessionManager = new SessionManager(this);
 
-        etRecipient = findViewById(R.id.etRecipientEmail);
+        etRecipient = findViewById(R.id.etRecipient);
         etAmount = findViewById(R.id.etAmount);
-        tvConvertedAmount = findViewById(R.id.tvConvertedAmount);
+        cvFeeBreakdown = findViewById(R.id.cvFeeBreakdown);
+        tvRate = findViewById(R.id.tvRate);
+        tvFee = findViewById(R.id.tvFee);
+        tvRecipientGets = findViewById(R.id.tvRecipientGets);
         btnSend = findViewById(R.id.btnSend);
         progress = findViewById(R.id.sendProgress);
 
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
         btnSend.setOnClickListener(v -> validateAndSend());
 
-        com.google.android.material.textfield.TextInputLayout tilRecipient = findViewById(R.id.tilRecipient);
-        if (tilRecipient != null) {
-            tilRecipient.setEndIconOnClickListener(v -> {
-                Intent intent = new Intent(this, ContactsActivity.class);
-                contactsLauncher.launch(intent);
-            });
-        }
-
-        if (etAmount != null) {
-            etAmount.addTextChangedListener(new android.text.TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    updateFxConversion(s.toString());
-                }
-                @Override
-                public void afterTextChanged(android.text.Editable s) {}
-            });
-        }
+        etAmount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                calculateFees(s.toString());
+            }
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
     }
 
-    private void updateFxConversion(String amountStr) {
+    private void calculateFees(String amountStr) {
         if (amountStr.isEmpty()) {
-            if (tvConvertedAmount != null) tvConvertedAmount.setVisibility(View.GONE);
+            cvFeeBreakdown.setVisibility(View.GONE);
             return;
         }
 
         try {
             double amount = Double.parseDouble(amountStr);
-            ApiClient.getFxApi().convert("USD", targetCurrency, amount).enqueue(new Callback<Map<String, Object>>() {
-                @Override
-                public void onResponse(@NonNull Call<Map<String, Object>> call, @NonNull Response<Map<String, Object>> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        Object result = response.body().get("result");
-                        if (result != null && tvConvertedAmount != null) {
-                            tvConvertedAmount.setVisibility(View.VISIBLE);
-                            tvConvertedAmount.setText(String.format(Locale.getDefault(), "≈ %.2f %s", Double.parseDouble(result.toString()), targetCurrency));
-                        }
-                    }
-                }
+            double razorpayFee = amount * 0.02;
+            double bankFee = amount * 0.0035;
+            double totalFee = razorpayFee + bankFee;
+            double recipientGets = amount * currentRate;
 
-                @Override
-                public void onFailure(@NonNull Call<Map<String, Object>> call, @NonNull Throwable t) {
-                }
-            });
+            cvFeeBreakdown.setVisibility(View.VISIBLE);
+            
+            // Using resource string for formatting as suggested
+            tvRate.setText(getString(R.string.format_fx_rate, "USD", currentRate, "INR"));
+            tvFee.setText(String.format(Locale.getDefault(), "$%.2f", totalFee));
+            tvRecipientGets.setText(String.format(Locale.getDefault(), "₹%.2f", recipientGets));
         } catch (NumberFormatException e) {
-            if (tvConvertedAmount != null) tvConvertedAmount.setVisibility(View.GONE);
+            cvFeeBreakdown.setVisibility(View.GONE);
         }
     }
 
     private void validateAndSend() {
-        if (etRecipient == null || etAmount == null) return;
-        
-        String recipientEmail = etRecipient.getText() != null ? etRecipient.getText().toString().trim() : "";
-        String amountStr = etAmount.getText() != null ? etAmount.getText().toString().trim() : "";
+        if (etRecipient.getText() == null || etAmount.getText() == null) return;
 
-        if (recipientEmail.isEmpty() || amountStr.isEmpty()) {
-            Toast.makeText(this, "All fields required", Toast.LENGTH_SHORT).show();
+        String identifier = etRecipient.getText().toString().trim();
+        String amountStr = etAmount.getText().toString().trim();
+
+        if (identifier.isEmpty() || amountStr.isEmpty()) {
+            Toast.makeText(this, "Please enter recipient and amount", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        final double amountVal;
-        try {
-            amountVal = Double.parseDouble(amountStr);
-        } catch (NumberFormatException e) {
-            Toast.makeText(this, "Invalid amount", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
+        double amount = Double.parseDouble(amountStr);
         btnSend.setVisibility(View.GONE);
         progress.setVisibility(View.VISIBLE);
 
-        String userId = sessionManager.getUserId();
-        String orFilter = "sender_id.eq." + userId + ",recipient_id.eq." + userId;
-        ApiClient.getSupabaseApi().getTransactions(orFilter, "created_at.desc", 20)
-                .enqueue(new Callback<>() {
-            @Override
-            public void onResponse(@NonNull Call<List<Transaction>> call, @NonNull Response<List<Transaction>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<Transaction> history = response.body();
-                    AmlRulesEngine.AmlResult amlResult = AmlRulesEngine.checkTransfer(amountVal, "USD", history, userId);
-                    if (!AmlRulesEngine.canProceed(amlResult)) {
-                        stopLoading("Blocked by AML: " + (amlResult.getTriggeredRules().isEmpty() ? "Risk factor" : amlResult.getTriggeredRules().get(0)));
-                        return;
-                    }
-                    findRecipient(recipientEmail, amountVal, history);
-                } else {
-                    stopLoading("Sync error. Try again.");
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<List<Transaction>> call, @NonNull Throwable t) {
-                stopLoading("Network error");
-            }
-        });
-    }
-
-    private void findRecipient(String email, double amount, List<Transaction> history) {
-        ApiClient.getSupabaseApi().getProfile("eq." + email).enqueue(new Callback<>() {
+        // Lookup recipient by Email or RM ID
+        String orFilter = "rm_id.eq." + identifier + ",email.eq." + identifier;
+        ApiClient.getSupabaseApi().getProfileByAny(orFilter).enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(@NonNull Call<List<User>> call, @NonNull Response<List<User>> response) {
                 if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
-                    executeTransfer(response.body().get(0), amount, history);
+                    executeAtomicTransfer(response.body().get(0), amount);
                 } else {
                     stopLoading("Recipient not found");
                 }
@@ -184,48 +129,49 @@ public class SendMoneyActivity extends AppCompatActivity {
         });
     }
 
-    private void executeTransfer(User recipient, double amount, List<Transaction> history) {
-        final String senderId = sessionManager.getUserId();
-        
-        Transaction tx = new Transaction();
-        tx.setSenderId(senderId);
-        tx.setRecipientId(recipient.getId());
-        tx.setSenderName(sessionManager.getUserName());
-        tx.setRecipientName(recipient.getFullName());
-        tx.setAmount(amount);
-        tx.setCurrency("USD");
-        tx.setType("transfer");
-        tx.setStatus("completed");
+    private void executeAtomicTransfer(User recipient, double amount) {
+        Map<String, Object> params = prepareTransferParams(recipient, amount);
 
-        String prevHash = HashChainService.getChainRoot(history);
-        String currentHash = HashChainService.computeHash(tx, prevHash);
-        tx.setPrevHash(prevHash);
-        tx.setCurrentHash(currentHash);
-
-        ApiClient.getSupabaseApi().createTransaction(tx).enqueue(new Callback<>() {
+        ApiClient.getSupabaseApi().executeTransfer(params).enqueue(new Callback<String>() {
             @Override
-            public void onResponse(@NonNull Call<List<Transaction>> call, @NonNull Response<List<Transaction>> response) {
+            public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
                 if (response.isSuccessful()) {
-                    updateWallets(senderId, recipient.getId(), amount);
+                    Toast.makeText(SendMoneyActivity.this, "Transfer Successful!", Toast.LENGTH_LONG).show();
+                    finish();
                 } else {
-                    stopLoading("Transfer failed");
+                    stopLoading("Transfer failed: Insufficient balance");
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<Transaction>> call, @NonNull Throwable t) {
-                stopLoading("Persistence error");
+            public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
+                Log.e(TAG, "RPC execution failed", t);
+                stopLoading("Execution failed");
             }
         });
     }
 
-    private void updateWallets(@SuppressWarnings("unused") String senderId, 
-                               @SuppressWarnings("unused") String recipientId, 
-                               @SuppressWarnings("unused") double amount) {
-        Toast.makeText(this, "Transfer Successful!", Toast.LENGTH_LONG).show();
-        finish();
-    }
+    /**
+     * Extracted method for preparing RPC parameters as suggested by lint.
+     */
+    @NonNull
+    private Map<String, Object> prepareTransferParams(User recipient, double amount) {
+        String senderId = sessionManager.getUserId();
+        double totalFee = (amount * 0.02) + (amount * 0.0035);
+        double converted = amount * currentRate;
 
+        Map<String, Object> params = new HashMap<>();
+        params.put("p_sender_id", senderId);
+        params.put("p_receiver_id", recipient.getId());
+        params.put("p_source_currency", "USD");
+        params.put("p_target_currency", "INR");
+        params.put("p_source_amount", amount);
+        params.put("p_target_amount", converted);
+        params.put("p_fx_rate", currentRate);
+        params.put("p_fee_amount", totalFee);
+        params.put("p_note", "Sent from SwiftX Android");
+        return params;
+    }
 
     private void stopLoading(String msg) {
         btnSend.setVisibility(View.VISIBLE);
