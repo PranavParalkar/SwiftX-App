@@ -26,7 +26,6 @@ public class ExchangeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exchange);
 
-        SessionManager sessionManager = new SessionManager(this); // Local variable
         etAmount = findViewById(R.id.etAmount);
         tvConversionResult = findViewById(R.id.tvConversionResult);
         Button btnExchange = findViewById(R.id.btnExchange); // Local variable

@@ -41,7 +41,7 @@ public class ActivityFragment extends Fragment {
 
     private void fetchHistory() {
         String userId = sessionManager.getUserId();
-        String orFilter = "sender_id.eq." + userId + ",recipient_id.eq." + userId;
+        String orFilter = "(sender_id.eq." + userId + ",recipient_id.eq." + userId + ")";
         ApiClient.getSupabaseApi().getTransactions(orFilter, "created_at.desc", 100).enqueue(new Callback<List<Transaction>>() {
             @Override
             public void onResponse(@NonNull Call<List<Transaction>> call, @NonNull Response<List<Transaction>> response) {

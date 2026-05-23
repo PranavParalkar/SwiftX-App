@@ -184,6 +184,7 @@
     <string name="btn_verify_send">Verify &amp; Send</string>
     <string name="cd_back_arrow">Back Arrow</string>
     <string name="format_fx_rate">1 %1$s = %2$.2f %3$s</string>
+    <string name="placeholder_eur_zero">≈ 0.00 EUR</string>
 
     <!-- Admin Center -->
     <string name="label_admin_center">Admin Center</string>

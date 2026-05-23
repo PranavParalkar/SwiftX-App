@@ -36,16 +36,16 @@
                 <data android:scheme="swiftx" android:host="login-callback" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.RegisterActivity" />
-        <activity android:name=".activities.MainActivity" />
-        <activity android:name=".activities.SendMoneyActivity" />
-        <activity android:name=".activities.ReceiveMoneyActivity" />
-        <activity android:name=".activities.TransactionDetailActivity" />
-        <activity android:name=".activities.KycActivity" />
-        <activity android:name=".activities.ContactsActivity" />
-        <activity android:name=".activities.AddFundsActivity" />
-        <activity android:name=".activities.ExchangeActivity" />
-        <activity android:name=".activities.AdminDashboardActivity" />
+        <activity android:name="com.example.swift_app.activities.RegisterActivity" />
+        <activity android:name="com.example.swift_app.activities.MainActivity" />
+        <activity android:name="com.example.swift_app.activities.SendMoneyActivity" />
+        <activity android:name="com.example.swift_app.activities.ReceiveMoneyActivity" />
+        <activity android:name="com.example.swift_app.activities.TransactionDetailActivity" />
+        <activity android:name="com.example.swift_app.activities.KycActivity" />
+        <activity android:name="com.example.swift_app.activities.ContactsActivity" />
+        <activity android:name="com.example.swift_app.activities.AddFundsActivity" />
+        <activity android:name="com.example.swift_app.activities.ExchangeActivity" />
+        <activity android:name="com.example.swift_app.activities.AdminDashboardActivity" />
 
 
 
