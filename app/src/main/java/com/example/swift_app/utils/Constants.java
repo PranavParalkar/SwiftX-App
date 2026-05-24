@@ -2,9 +2,9 @@ package com.example.swift_app.utils;
 
 public class Constants {
     // Supabase - PRODUCTION CONFIGURATION
-    // TODO: Replace with your actual Supabase project credentials
+    // TODO: Replace with your actual Supabase project credentials from https://supabase.com/dashboard/project/_/settings/api
     public static final String SUPABASE_URL = "https://hpyjaaaqppntztlfizxp.supabase.co";
-    public static final String SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhweWphYWFxcHBudHp0bGZpenhwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY2MjI2NzAsImV4cCI6MjA1MjE5ODY3MH0.Ql8vZqZxQxQxQxQxQxQxQxQxQxQxQxQxQxQxQxQ";
+    public static final String SUPABASE_ANON_KEY = "sb_publishable_Kp1XbDZmWAcOq_lNnCdRCg_MbHy250p"; // ⚠️ REPLACE THIS!
 
     // API endpoints
     public static final String FX_API_BASE = "https://api.exchangerate-api.com/v4/";

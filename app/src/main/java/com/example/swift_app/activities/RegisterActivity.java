@@ -162,25 +162,54 @@ public class RegisterActivity extends AppCompatActivity {
         user.setPhone(etPhone.getText() != null ? etPhone.getText().toString() : "");
         user.setCountry(actvCountry.getText() != null ? actvCountry.getText().toString() : "");
 
+        Log.d(TAG, "Creating profile for user: " + email + " (ID: " + userId + ")");
+        Log.d(TAG, "Profile data: " + user.getFullName() + ", " + user.getCountry() + ", " + user.getPhone());
+
         ApiClient.getSupabaseApi().createProfile(user).enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(@NonNull Call<List<User>> call, @NonNull Response<List<User>> response) {
                 if (response.isSuccessful()) {
+                    Log.d(TAG, "Profile created successfully");
                     createUnifiedWallet(userId, email, name, token);
                 } else {
-                    btnRegister.setVisibility(View.VISIBLE);
-                    progress.setVisibility(View.GONE);
-                    Toast.makeText(RegisterActivity.this, "Profile setup failed", Toast.LENGTH_SHORT).show();
+                    // Profile creation failed - need to clean up the auth user
+                    String errorBody = "";
+                    try {
+                        if (response.errorBody() != null) {
+                            errorBody = response.errorBody().string();
+                        }
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error reading error body", e);
+                    }
+                    
+                    Log.e(TAG, "Profile creation failed: " + response.code() + " - " + response.message());
+                    Log.e(TAG, "Error body: " + errorBody);
+                    cleanupFailedRegistration(userId, email, "Profile creation failed: " + response.code());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<List<User>> call, @NonNull Throwable t) {
-                btnRegister.setVisibility(View.VISIBLE);
-                progress.setVisibility(View.GONE);
-                Toast.makeText(RegisterActivity.this, "Network error during profile creation", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Network error during profile creation", t);
+                cleanupFailedRegistration(userId, email, "Network error: " + t.getMessage());
             }
         });
+    }
+
+    private void cleanupFailedRegistration(String userId, String email, String error) {
+        // In a real app, you would need admin privileges to delete the auth user
+        // For now, we'll just show a helpful message
+        btnRegister.setVisibility(View.VISIBLE);
+        progress.setVisibility(View.GONE);
+        
+        String message = "Registration failed: " + error + 
+                        "\n\nAuth user was created but profile setup failed. " +
+                        "You can try to login with these credentials, " +
+                        "but you may need to contact support.";
+        Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
+        
+        // Log the issue for debugging
+        Log.w(TAG, "Zombie user created: " + email + " (ID: " + userId + ") - Error: " + error);
     }
 
     private void createUnifiedWallet(String userId, String email, String fullName, String token) {
@@ -190,21 +219,51 @@ public class RegisterActivity extends AppCompatActivity {
         wallet.setUsdBalance(0.0);
         wallet.setAedBalance(0.0);
 
+        Log.d(TAG, "Creating wallet for user: " + userId);
+
         ApiClient.getSupabaseApi().createWallet(wallet).enqueue(new Callback<List<com.example.swift_app.models.Wallet>>() {
             @Override
             public void onResponse(@NonNull Call<List<com.example.swift_app.models.Wallet>> call, @NonNull Response<List<com.example.swift_app.models.Wallet>> response) {
-                sessionManager.saveSession(token != null ? token : "mock_token", userId, email, fullName);
-                Toast.makeText(RegisterActivity.this, "Welcome to SwiftX!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                finish();
+                if (response.isSuccessful()) {
+                    Log.d(TAG, "Wallet created successfully");
+                    sessionManager.saveSession(token != null ? token : "mock_token", userId, email, fullName);
+                    Toast.makeText(RegisterActivity.this, "Welcome to SwiftX!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    String errorBody = "";
+                    try {
+                        if (response.errorBody() != null) {
+                            errorBody = response.errorBody().string();
+                        }
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error reading wallet error body", e);
+                    }
+                    
+                    Log.e(TAG, "Wallet creation failed: " + response.code() + " - " + response.message());
+                    Log.e(TAG, "Error body: " + errorBody);
+                    
+                    // Even if wallet fails, we can still login - wallet can be created later
+                    sessionManager.saveSession(token != null ? token : "mock_token", userId, email, fullName);
+                    Toast.makeText(RegisterActivity.this, 
+                        "Account created! Wallet setup will complete shortly.", 
+                        Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                    finish();
+                }
             }
 
             @Override
             public void onFailure(@NonNull Call<List<com.example.swift_app.models.Wallet>> call, @NonNull Throwable t) {
+                Log.e(TAG, "Network error during wallet creation", t);
+                
                 // Proceed anyway - wallet can be provisioned by admin if it fails
                 sessionManager.saveSession(token != null ? token : "mock_token", userId, email, fullName);
+                Toast.makeText(RegisterActivity.this, 
+                    "Account created! Please check your wallet in a few minutes.", 
+                    Toast.LENGTH_LONG).show();
                 startActivity(new Intent(RegisterActivity.this, MainActivity.class));
                 finish();
             }

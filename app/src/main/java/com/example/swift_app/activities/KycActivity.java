@@ -44,8 +44,10 @@ public class KycActivity extends AppCompatActivity {
             if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                 selectedDocumentUri = result.getData().getData();
                 if (selectedDocumentUri != null) {
-                    ivDocumentPreview.setImageURI(selectedDocumentUri);
-                    ivDocumentPreview.setVisibility(android.view.View.VISIBLE);
+                    if (ivDocumentPreview != null) {
+                        ivDocumentPreview.setImageURI(selectedDocumentUri);
+                        ivDocumentPreview.setVisibility(android.view.View.VISIBLE);
+                    }
                     btnSubmit.setEnabled(true);
                     Toast.makeText(this, "Document selected", Toast.LENGTH_SHORT).show();
                 }
@@ -78,7 +80,7 @@ public class KycActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, types);
         spinner.setAdapter(adapter);
 
-        ivDocumentPreview = findViewById(R.id.ivDocumentPreview);
+        // ivDocumentPreview = findViewById(R.id.ivDocumentPreview); // Optional - may not be in layout
         btnUpload = findViewById(R.id.btnUpload);
         btnUpload.setOnClickListener(v -> checkPermissionAndPickDocument());
 

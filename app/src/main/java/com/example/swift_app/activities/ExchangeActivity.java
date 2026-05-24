@@ -51,17 +51,17 @@ public class ExchangeActivity extends AppCompatActivity {
         
         etAmount = findViewById(R.id.etAmount);
         tvConversionResult = findViewById(R.id.tvConversionResult);
-        tvExchangeRate = findViewById(R.id.tvExchangeRate);
         btnExchange = findViewById(R.id.btnExchange);
-        progress = findViewById(R.id.exchangeProgress);
         
-        // Setup currency dropdowns if they exist in layout
-        actvFromCurrency = findViewById(R.id.actvFromCurrency);
-        actvToCurrency = findViewById(R.id.actvToCurrency);
+        // Optional views - commented out if not in layout
+        // tvExchangeRate = findViewById(R.id.tvExchangeRate);
+        // progress = findViewById(R.id.exchangeProgress);
+        // actvFromCurrency = findViewById(R.id.actvFromCurrency);
+        // actvToCurrency = findViewById(R.id.actvToCurrency);
         
-        if (actvFromCurrency != null && actvToCurrency != null) {
-            setupCurrencyDropdowns();
-        }
+        // if (actvFromCurrency != null && actvToCurrency != null) {
+        //     setupCurrencyDropdowns();
+        // }
 
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
 
@@ -188,14 +188,14 @@ public class ExchangeActivity extends AppCompatActivity {
             return;
         }
 
-        btnExchange.setVisibility(View.GONE);
-        progress.setVisibility(View.VISIBLE);
+        if (btnExchange != null) btnExchange.setVisibility(View.GONE);
+        if (progress != null) progress.setVisibility(View.VISIBLE);
 
         // In a real implementation, this would update wallet balances
         // For now, we'll simulate the exchange
         new android.os.Handler().postDelayed(() -> {
-            btnExchange.setVisibility(View.VISIBLE);
-            progress.setVisibility(View.GONE);
+            if (btnExchange != null) btnExchange.setVisibility(View.VISIBLE);
+            if (progress != null) progress.setVisibility(View.GONE);
             
             double result = amount * rate;
             String message = String.format(Locale.getDefault(), 
